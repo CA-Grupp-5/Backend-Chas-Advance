@@ -1,11 +1,11 @@
 import express from 'express';
 import dotenv from 'dotenv';
-import { registerService } from '../../services/users/registerService.js';
+import { registerController } from '../../controllers/users/registerController.js';
 
 dotenv.config();
 
 const router = express.Router();
 
-router.post('/auth/register', registerService);
+router.post('/auth/register', registerController);
 
 export default router;
