@@ -5,6 +5,6 @@ dotenv.config();
 
 const router = express.Router();
 
-router.get('/packages', getPackagesController);
+router.post('/packages/:id/logs', postLogsController);
 
 export default router;

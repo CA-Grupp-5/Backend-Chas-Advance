@@ -5,6 +5,6 @@ dotenv.config();
 
 const router = express.Router();
 
-router.get('/packages', getPackagesController);
+router.post('/notifications', postNotificationsController);
 
 export default router;
