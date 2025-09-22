@@ -5,6 +5,6 @@ dotenv.config();
 
 const router = express.Router();
 
-router.get('/packages/:id/label', getQRController);
+router.get('/packages/:id/label', getLabelController);
 
 export default router;
