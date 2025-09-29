@@ -1,6 +1,6 @@
-import db 
+import db from '../../config/db.js';
 
-const getPackagesByIdController = async (req, res, next) => {
+export const getPackagesByIdController = async (req, res, next) => {
   try {
     const userId = req.params.id;
 
