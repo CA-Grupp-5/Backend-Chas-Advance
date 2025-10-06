@@ -5,6 +5,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 import sensorRoutes from './routes/sensor-logs/sensorRoutes.js';
+import registerRoute from './routes/users/registerRoute.js';
 
 // // ROUTES (relativt från src/app.js)
 // import trucksListRoutes from './routes/trucks/getTrucks.js';
@@ -23,6 +24,8 @@ app.get('/', (req, res) => {
 app.get('/home', (req, res) => {
   res.send('API is running...');
 });
+
+app.use(registerRoute);
 
 app.use(sensorRoutes);
 
