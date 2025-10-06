@@ -20,7 +20,7 @@ app.get('/home', (req, res) => {
   res.send('API is running...');
 });
 
-app.use(sensorRoutes);
+// app.use(sensorRoutes);
 
 // // Health
 // app.get('/health', (req, res) => res.json({ ok: true }));
