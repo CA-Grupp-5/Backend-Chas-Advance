@@ -4,11 +4,11 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-import sensorRoutes from './routes/sensor-logs/sensorRoutes.js';
+// import sensorRoutes from './routes/sensor-logs/sensorRoutes.js';
 
-// ROUTES (relativt från src/app.js)
-import trucksListRoutes from './routes/trucks/getTrucks.js';
-import truckPackagesRoutes from './routes/trucks/getTruckPackages.js';
+// // ROUTES (relativt från src/app.js)
+// import trucksListRoutes from './routes/trucks/getTrucks.js';
+// import truckPackagesRoutes from './routes/trucks/getTruckPackages.js';
 // import packagesRoutes from './routes/packages/getPackagesRoute.js'  // fler när du vill
 
 const app = express();
