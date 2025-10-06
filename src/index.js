@@ -1,12 +1,10 @@
-import express from 'express';
+// src/index.js
+import app from './config/server.js';    // ✅ Import the configured Express app
+import logger from './utilities/logger.js';  // ✅ Import the logger
 
-const app = express();
 const PORT = process.env.PORT || 3000;
 
-app.get('/', (req, res) => {
-  res.send('Hello, World!');
-});
-
+// Start the server
 app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
+  logger.info(`🚀 Server running on http://localhost:${PORT} in ${process.env.NODE_ENV || 'development'} mode`);
 });
