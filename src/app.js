@@ -4,7 +4,7 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-// import sensorRoutes from './routes/sensor-logs/sensorRoutes.js';
+import sensorRoutes from './routes/sensor-logs/sensorRoutes.js';
 
 // // ROUTES (relativt från src/app.js)
 // import trucksListRoutes from './routes/trucks/getTrucks.js';
@@ -16,11 +16,15 @@ const app = express();
 // Global middleware
 app.use(express.json());
 
+app.get('/', (req, res) => {
+  res.send('Hello world!');
+});
+
 app.get('/home', (req, res) => {
   res.send('API is running...');
 });
 
-// app.use(sensorRoutes);
+app.use(sensorRoutes);
 
 // // Health
 // app.get('/health', (req, res) => res.json({ ok: true }));
