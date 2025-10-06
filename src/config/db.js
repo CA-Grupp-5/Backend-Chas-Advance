@@ -12,16 +12,16 @@ const pool = new Pool({
   ssl: { rejectUnauthorized: false }, // Azure PSQL kräver SSL
 });
 
-async function test() {
-  try {
-    const res = await pool.query('SELECT NOW()');
-    console.log(res.rows);
-  } catch (err) {
-    console.error(err);
-  } finally {
-    pool.end();
-  }
-}
+// async function test() {
+//   try {
+//     const res = await pool.query('SELECT NOW()');
+//     console.log(res.rows);
+//   } catch (err) {
+//     console.error(err);
+//   } finally {
+//     pool.end();
+//   }
+// }
 
 test();
 
