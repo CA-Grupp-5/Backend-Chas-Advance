@@ -23,6 +23,6 @@ const pool = new Pool({
 //   }
 // }
 
-test();
+// test();
 
 export default pool;
