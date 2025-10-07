@@ -19,7 +19,7 @@ export const getPackagesByIdController = async (req, res, next) => {
 
     if (packages.length === 0) {
       return res
-        .status(404)
+        .status(400)
         .json({ message: 'No packages found for this user.' });
     }
 
