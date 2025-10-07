@@ -9,20 +9,7 @@ const pool = new Pool({
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
-  ssl: { rejectUnauthorized: false }, // Azure PSQL kräver SSL
+  ssl: { rejectUnauthorized: false },
 });
-
-// async function test() {
-//   try {
-//     const res = await pool.query('SELECT NOW()');
-//     console.log(res.rows);
-//   } catch (err) {
-//     console.error(err);
-//   } finally {
-//     pool.end();
-//   }
-// }
-
-// test();
 
 export default pool;
