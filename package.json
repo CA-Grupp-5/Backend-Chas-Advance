@@ -2,13 +2,14 @@
   "name": "backend-chas-advance",
   "version": "1.0.0",
   "type": "module",
-  "main": "src/index.js",
+  "main": "src/server.js",
   "keywords": [],
   "author": "Chas Advance",
   "license": "ISC",
   "scripts": {
-    "dev": "nodemon src/index.js",
-    "start": "node src/index.js"
+    "dev": "nodemon src/server.js",
+    "test": "jest",
+    "start": "node src/server.js"
   },
   "dependencies": {
     "bcryptjs": "^3.0.2",
@@ -24,6 +25,8 @@
     "winston": "^3.18.3"
   },
   "devDependencies": {
-    "nodemon": "^3.1.10"
+    "jest": "^30.2.0",
+    "nodemon": "^3.1.10",
+    "supertest": "^7.1.4"
   }
 }
