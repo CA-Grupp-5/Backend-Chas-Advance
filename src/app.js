@@ -6,6 +6,7 @@ dotenv.config();
 
 import sensorRoutes from './routes/sensor-logs/sensorRoutes.js';
 import registerRoute from './routes/users/registerRoute.js';
+import postPackagesRoute from './routes/packages/postPackagesRoute.js';
 
 // // ROUTES (relativt från src/app.js)
 // import trucksListRoutes from './routes/trucks/getTrucks.js';
@@ -26,8 +27,9 @@ app.get('/home', (req, res) => {
 });
 
 app.use(registerRoute);
-
 app.use(sensorRoutes);
+app.use(postPackagesRoute);
+
 
 // // Health
 // app.get('/health', (req, res) => res.json({ ok: true }));
