@@ -29,15 +29,15 @@ export const postPackagesController = async (req, res, next) => {
   } = req.body;
 
   // --- Enkel validering ---
-  if (!sender_id || !receiver_id) {
-    return res
-      .status(400)
-      .json({ message: 'sender_id och receiver_id är obligatoriska.' });
-  }
+  // if (!sender_id || !receiver_id) {
+  //   return res
+  //     .status(400)
+  //     .json({ message: 'sender_id och receiver_id är obligatoriska.' });
+  // }
 
   try {
     const query = `
-      INSERT INTO "Packages" (
+      INSERT INTO "packages" (
         sender_id,
         receiver_id,
         current_location,
