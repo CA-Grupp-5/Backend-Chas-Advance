@@ -1,4 +1,5 @@
 import bcrypt from 'bcryptjs';
+import db from '../../config/db.js';
 
 export const registerController = async (req, res, next) => {
   try {
@@ -12,11 +13,15 @@ export const registerController = async (req, res, next) => {
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Spara i databas
+    const result = await db.query(
+      `INSERT INTO users (name, email, password_hash, role)
+       VALUES ($1, $2, $3, 'user') RETURNING *`,
+      [name, email, hashedPassword]
+    );
 
     res.status(201).json({
       message: 'User registered successfully',
-      user: { name, email, password: hashedPassword },
+      user: { name, email },
     });
   } catch (error) {
     next(error);
