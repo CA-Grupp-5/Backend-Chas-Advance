@@ -1,0 +1,37 @@
+import db from '../../config/db.js';
+
+export const getLogsController = async (req, res, next) => {
+  const packageId = req.params.id;
+
+  if (!packageId || isNaN(packageId)) {
+    return res.status(400).json({
+      message: 'A valid package ID is required.',
+    });
+  }
+
+  try {
+    const { data, error } = await db.query(
+      `SELECT * FROM package_logs WHERE package_id = $1 ORDER BY timestamp DESC`,
+      [packageId]
+    );
+
+    if (error) {
+      return res
+        .status(500)
+        .json({ message: 'Database error', detail: error.message });
+    }
+
+    if (!data || data.length === 0) {
+      return res
+        .status(400)
+        .json({ message: 'No sensor logs found for this package.' });
+    }
+
+    res.status(200).json({
+      message: 'Sensor logs retrieved successfully',
+      logs: data,
+    });
+  } catch (error) {
+    next(error);
+  }
+};

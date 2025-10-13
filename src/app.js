@@ -1,8 +1,5 @@
 // src/app.js
 import express from 'express';
-import dotenv from 'dotenv';
-
-dotenv.config();
 
 import sensorRoutes from './routes/sensor-logs/sensorRoutes.js';
 import registerRoute from './routes/users/registerRoute.js';
@@ -19,7 +16,7 @@ const app = express();
 app.use(express.json());
 
 app.get('/', (req, res) => {
-  res.send('Hello world!');
+  res.send('Hello world again!');
 });
 
 app.get('/home', (req, res) => {
