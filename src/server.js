@@ -1,7 +1,12 @@
 import app from './app.js';
-import dotenv from 'dotenv';
+try {
+  import('dotenv').then((dotenv) => dotenv.config());
+} catch (e) {
+  console.warn('dotenv kunde inte laddas, körs troligen i production.');
+}
+// import dotenv from 'dotenv';
 
-dotenv.config();
+// dotenv.config();
 
 const PORT = process.env.PORT || 3000;
 
