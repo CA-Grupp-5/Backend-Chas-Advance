@@ -6,6 +6,7 @@ dotenv.config();
 
 import sensorRoutes from './routes/sensor-logs/sensorRoutes.js';
 import registerRoute from './routes/users/registerRoute.js';
+import loginRoute from './routes/users/loginRoute.js';
 
 // // ROUTES (relativt från src/app.js)
 // import trucksListRoutes from './routes/trucks/getTrucks.js';
@@ -18,7 +19,7 @@ const app = express();
 app.use(express.json());
 
 app.get('/', (req, res) => {
-  res.send('Hello world!');
+  res.send('Hello world again!');
 });
 
 app.get('/home', (req, res) => {
@@ -26,7 +27,7 @@ app.get('/home', (req, res) => {
 });
 
 app.use(registerRoute);
-
+app.use(loginRoute);
 app.use(sensorRoutes);
 
 // // Health
