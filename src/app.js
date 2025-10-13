@@ -2,8 +2,7 @@
 import express from 'express';
 
 import sensorRoutes from './routes/sensor-logs/sensorRoutes.js';
-import registerRoute from './routes/users/registerRoute.js';
-import loginRoute from './routes/users/loginRoute.js';
+import userRoutes from './routes/users/userRoutes.js';
 
 // // ROUTES (relativt från src/app.js)
 // import trucksListRoutes from './routes/trucks/getTrucks.js';
@@ -23,8 +22,7 @@ app.get('/home', (req, res) => {
   res.send('API is running...');
 });
 
-app.use(registerRoute);
-app.use(loginRoute);
+app.use(userRoutes);
 app.use(sensorRoutes);
 
 // // Health
