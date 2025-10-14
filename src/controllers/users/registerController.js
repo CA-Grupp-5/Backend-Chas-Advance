@@ -2,9 +2,9 @@ import bcrypt from 'bcryptjs';
 import db from '../../config/db.js';
 
 export const registerController = async (req, res, next) => {
-  try {
-    const { name, email, password } = req.body;
+  const { name, email, password } = req.body;
 
+  try {
     if (!name || !email || !password) {
       return res.status(400).json({
         message: 'Name, email and password are required to register user.',
