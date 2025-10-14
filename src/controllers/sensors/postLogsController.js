@@ -1,4 +1,7 @@
 import db from '../../config/db.js';
+// import dotenv from 'dotenv';
+
+// dotenv.config();
 
 export const postLogsController = async (req, res, next) => {
   const packageId = req.params.id;
