@@ -1,7 +1,7 @@
 import express from 'express';
 
-import getLogsRoute from './getLogs.js  ';
-import postLogsRoute from './postLogs.js';
+import getLogsRoute from './getLogsRoute.js  ';
+import postLogsRoute from './postLogsRoute.js';
 import deleteLogsRoute from './deleteLogsRoute.js';
 import updateLogsRoute from './updateLogsRoute.js';
 

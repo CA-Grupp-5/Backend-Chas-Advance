@@ -3,6 +3,9 @@ import express from 'express';
 
 import sensorRoutes from './routes/sensor-logs/sensorRoutes.js';
 import userRoutes from './routes/users/userRoutes.js';
+import { errorHandler } from './middleware/errorHandler.js';
+// import trucksListRoutes from './routes/trucks/getTrucksRoute.js';
+// import truckPackagesRoutes from './routes/trucks/getTruckPackagesRoute.js';
 import postPackagesRoute from './routes/packages/postPackagesRoute.js';
 import postTruckRoute from './routes/trucks/postTruckRoute.js';
 
@@ -25,9 +28,6 @@ app.use(sensorRoutes);
 // app.use('/trucks', trucksListRoutes); // GET /trucks
 // app.use('/trucks', truckPackagesRoutes); // GET /trucks/:id/packages
 
-app.use((err, req, res, next) => {
-  console.error(err);
-  res.status(500).json({ message: 'Internal server error' });
-});
+app.use(errorHandler);
 
 export default app;

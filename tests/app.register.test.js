@@ -3,6 +3,7 @@ import express from 'express';
 import registerRoute from '../src/routes/users/registerRoute.js';
 import db from '../src/config/db';
 import bcrypt from 'bcryptjs';
+import { errorHandler } from '../src/middleware/errorHandler.js';
 
 jest.mock('../src/config/db');
 jest.mock('bcryptjs');
@@ -10,6 +11,7 @@ jest.mock('bcryptjs');
 const app = express();
 app.use(express.json());
 app.use(registerRoute);
+app.use(errorHandler);
 
 describe('POST /auth/register', () => {
   beforeEach(() => {
@@ -51,7 +53,10 @@ describe('POST /auth/register', () => {
     expect(res.body.message).toBe('User registered successfully');
     expect(res.body.user.email).toBe('test@test.com');
     expect(bcrypt.hash).toHaveBeenCalledWith('password123', 10);
-    expect(db.query).toHaveBeenCalledTimes(1);
+    expect(db.query).toHaveBeenCalledWith(
+      expect.stringContaining('INSERT INTO users'),
+      ['Test User', 'test@test.com', 'hashedPassword123', 'user']
+    );
   });
 
   it('Should handle database errors and call next(error)', async () => {
@@ -64,6 +69,7 @@ describe('POST /auth/register', () => {
       password: 'password123',
     });
 
-    expect(res.statusCode).toBe(500);
+    expect(res.status).toBe(500);
+    expect(res.body.message).toBe('Internal server error');
   });
 });
