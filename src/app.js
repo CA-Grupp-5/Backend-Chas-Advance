@@ -12,10 +12,6 @@ const app = express();
 app.use(express.json());
 
 app.get('/', (req, res) => {
-  res.send('Hello world again!');
-});
-
-app.get('/home', (req, res) => {
   res.send('API is running...');
 });
 
@@ -28,5 +24,10 @@ app.use(sensorRoutes);
 // // Mounta routes (notera att route-filerna INTE har '/trucks' i sina paths)
 // app.use('/trucks', trucksListRoutes); // GET /trucks
 // app.use('/trucks', truckPackagesRoutes); // GET /trucks/:id/packages
+
+app.use((err, req, res, next) => {
+  console.error(err);
+  res.status(500).json({ message: 'Internal server error' });
+});
 
 export default app;
