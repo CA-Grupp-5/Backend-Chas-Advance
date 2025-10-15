@@ -1,15 +1,15 @@
 import db from '../../config/db.js';
 
 export const getPackagesByIdController = async (req, res, next) => {
+  const userId = req.params.id;
+
+  if (!userId || isNaN(userId)) {
+    return res.status(400).json({
+      message: 'A valid user ID is required.',
+    });
+  }
+
   try {
-    const userId = req.params.id;
-
-    if (!userId || isNaN(userId)) {
-      return res.status(400).json({
-        message: 'A valid user ID is required.',
-      });
-    }
-
     const packageResult = await db.query(
       'SELECT * FROM packages WHERE user_id = $1',
       [userId]
@@ -19,7 +19,7 @@ export const getPackagesByIdController = async (req, res, next) => {
 
     if (packages.length === 0) {
       return res
-        .status(404)
+        .status(400)
         .json({ message: 'No packages found for this user.' });
     }
 

@@ -1,10 +1,8 @@
 import express from 'express';
-import dotenv from 'dotenv';
-
-dotenv.config();
+import { loginUserController } from '../../controllers/users/loginUserController.js';
 
 const router = express.Router();
 
-router.post('/auth/login', loginController);
+router.post('/auth/login', loginUserController);
 
 export default router;

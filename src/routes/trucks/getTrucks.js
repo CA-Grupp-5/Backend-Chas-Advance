@@ -1,10 +1,8 @@
-import express from 'express';
-import dotenv from 'dotenv';
+import { Router } from 'express';
+import { listTrucks } from '../../controllers/trucks/getTrucks.controller.js';
 
-dotenv.config();
+const router = Router();
 
-const router = express.Router();
-
-router.get('/trucks', getTrucksController);
+router.get('/trucks', listTrucks);  // => GET /trucks
 
 export default router;
