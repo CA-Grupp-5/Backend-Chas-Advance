@@ -1,4 +1,7 @@
 import db from '../../config/db.js';
+// import dotenv from 'dotenv';
+
+// dotenv.config();
 
 export const postLogsController = async (req, res, next) => {
   const packageId = req.params.id;
@@ -23,25 +26,21 @@ export const postLogsController = async (req, res, next) => {
   }
 
   try {
-    const { data, error } = await db.query(
-      `INSERT INTO Sensors (package_id, temperature, humidity, timestamp)
+    const result = await db.query(
+      `INSERT INTO sensors (package_id, temperature, humidity, timestamp)
              VALUES ($1, $2, $3, NOW()) RETURNING *`,
       [packageId, temperature, humidity]
     );
 
-    if (error) {
-      return res
-        .status(500)
-        .json({ message: 'Database error', detail: error.message });
-    }
+    const insertedLog = result.rows[0];
 
-    if (!data || data.length === 0) {
+    if (!insertedLog) {
       return res.status(500).json({ message: 'Failed to insert sensor log.' });
     }
 
     res.status(201).json({
       message: 'Sensor logs added successfully',
-      logs: data[0],
+      logs: insertedLog,
     });
   } catch (error) {
     next(error);

@@ -1,18 +1,10 @@
 // src/app.js
 import express from 'express';
-import dotenv from 'dotenv';
-
-dotenv.config();
 
 import sensorRoutes from './routes/sensor-logs/sensorRoutes.js';
-import registerRoute from './routes/users/registerRoute.js';
+import userRoutes from './routes/users/userRoutes.js';
 import postPackagesRoute from './routes/packages/postPackagesRoute.js';
 import postTruckRoute from './routes/trucks/postTruckRoute.js';
-
-// // ROUTES (relativt från src/app.js)
-// import trucksListRoutes from './routes/trucks/getTrucks.js';
-// import truckPackagesRoutes from './routes/trucks/getTruckPackages.js';
-// import packagesRoutes from './routes/packages/getPackagesRoute.js'  // fler när du vill
 
 const app = express();
 
@@ -20,22 +12,15 @@ const app = express();
 app.use(express.json());
 
 app.get('/', (req, res) => {
-  res.send('Hello world!');
+  res.send('Hello world again!');
 });
 
 app.get('/home', (req, res) => {
   res.send('API is running...');
 });
 
-app.use(registerRoute);
+app.use(userRoutes);
 app.use(sensorRoutes);
-
-//Posts
-app.use(postPackagesRoute);
-app.use(postTruckRoute);
-
-//GETS
-
 
 // // Health
 // app.get('/health', (req, res) => res.json({ ok: true }));
