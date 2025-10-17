@@ -1,4 +1,4 @@
-import db from '../../db/index.js';
+import db from '../../config/db.js'; //Fel vid importering, sökvägen finns inte. Det va import db/index.js
 // import dotenv from 'dotenv';
 
 // dotenv.config();

@@ -1,6 +1,6 @@
 import express from 'express';
 
-import getLogsRoute from './getLogsRoute.js  ';
+import getLogsRoute from './getLogsRoute.js'; // Ändring hade tvåå mellanslag
 import postLogsRoute from './postLogsRoute.js';
 import deleteLogsRoute from './deleteLogsRoute.js';
 import updateLogsRoute from './updateLogsRoute.js';

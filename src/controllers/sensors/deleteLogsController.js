@@ -1,4 +1,4 @@
-import db from '../../db/index.js';
+import db from '../../config/db.js';
 
 export const deleteLogsController = async (req, res) => {
   const packageId = req.params.id;
