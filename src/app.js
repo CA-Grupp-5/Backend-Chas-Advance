@@ -1,13 +1,13 @@
 // src/app.js
 import express from 'express';
-import { swaggerUi, swaggerSpec } from './swaggerConfig.js';
+import { swaggerUi, swaggerSpec } from '../swaggerConfig.js';
 import sensorRoutes from './routes/sensor-logs/sensorRoutes.js';
 import userRoutes from './routes/users/userRoutes.js';
 import { errorHandler } from './middleware/errorHandler.js';
 // import trucksListRoutes from './routes/trucks/getTrucksRoute.js';
 // import truckPackagesRoutes from './routes/trucks/getTruckPackagesRoute.js';
-import postPackagesRoute from './routes/packages/postPackagesRoute.js';
-import postTruckRoute from './routes/trucks/postTruckRoute.js';
+// import postPackagesRoute from './routes/packages/postPackagesRoute.js';
+// import postTruckRoute from './routes/trucks/postTruckRoute.js';
 
 const app = express();
 
