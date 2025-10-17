@@ -1,3 +1,4 @@
+//tests/app.postlogs.test.js
 import request from 'supertest';
 import express from 'express';
 import postLogsRoute from '../src/routes/sensor-logs/postLogsRoute.js';

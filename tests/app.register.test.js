@@ -1,3 +1,4 @@
+//tests/app.register.test.js
 import request from 'supertest';
 import express from 'express';
 import registerRoute from '../src/routes/users/registerRoute.js';
