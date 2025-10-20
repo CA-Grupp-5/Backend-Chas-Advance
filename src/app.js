@@ -11,8 +11,11 @@ dotenv.config();
 
 // ====== Import Routes ======
 import sensorRoutes from './routes/sensor-logs/sensorRoutes.js';
-import userRoutes from './routes/users/userRoutesRoute.js';
-import packageRoutes from './routes/packages/packageRoutes.js';
+import userRoutes from './routes/users/userRoutes.js';
+import packageRoutes from './routes/packages/packagesRoutes.js'
+import truckRoutes from './routes/trucks/truckRoutes.js';
+import { errorHandler } from './middleware/errorHandler.js';
+
 
 const app = express();
 
@@ -37,6 +40,7 @@ app.get('/', (req, res) => res.send('API is running...'));
 app.use(userRoutes);
 app.use(sensorRoutes);
 app.use(packageRoutes);
+app.use(truckRoutes);
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 

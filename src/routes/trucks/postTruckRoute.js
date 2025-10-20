@@ -1,3 +1,4 @@
+//postTruckRoute.js
 import express from 'express';
 import { postTruckController } from '../../controllers/trucks/postTruckController.js';
 

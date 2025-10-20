@@ -1,12 +1,17 @@
+//getTrucksRoute.js
 import db from '../../config/db.js';
 
 export const listTrucks = async (req, res, next) => {
   try {
     const sql = `
-      SELECT lp.id, lp.license_plate, lp.status,
-             u.id AS driver_id, u.name AS driver_name
-      FROM "license_plate" lp
-      LEFT JOIN "Users" u ON u.id = lp.driver_id
+      SELECT 
+      lp.id, 
+      lp.license_plate, 
+      lp.status,
+      u.id AS driver_id, 
+      u.name AS driver_name
+      FROM license_plate lp
+      LEFT JOIN users u ON u.id = lp.driver_id
       ORDER BY lp.id DESC
     `;
     const { rows } = await db.query(sql);
