@@ -10,7 +10,7 @@ const router = express.Router();
  *     summary: Log in an existing user
  *     description: Authenticates a user using email and password, then returns a JWT token.
  *     tags:
- *       - Authentication
+ *       - Users
  *     requestBody:
  *       required: true
  *       content:

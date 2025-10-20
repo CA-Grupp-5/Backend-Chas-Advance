@@ -10,7 +10,7 @@ const router = express.Router();
  *     summary: Register a new user
  *     description: Creates a new user account with a name, email, and password. The password is hashed before storing.
  *     tags:
- *       - Authentication
+ *       - Users
  *     requestBody:
  *       required: true
  *       content:
