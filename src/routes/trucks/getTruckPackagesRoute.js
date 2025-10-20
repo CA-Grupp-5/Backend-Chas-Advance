@@ -1,3 +1,4 @@
+//getTruckPackagesRoute.js
 import { Router } from 'express';
 import { getTruckPackages } from '../../controllers/trucks/getTruckPackages.controller.js';
 
