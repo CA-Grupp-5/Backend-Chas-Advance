@@ -1,3 +1,4 @@
+//getTruckRoute.js
 import { Router } from 'express';
 import { listTrucks } from '../../controllers/trucks/getTrucks.controller.js';
 

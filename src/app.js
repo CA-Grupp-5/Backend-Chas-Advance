@@ -4,6 +4,7 @@ import express from 'express';
 import sensorRoutes from './routes/sensor-logs/sensorRoutes.js';
 import userRoutes from './routes/users/userRoutes.js';
 import packageRoutes from './routes/packages/packagesRoutes.js'
+import truckRoutes from './routes/trucks/truckRoutes.js';
 import { errorHandler } from './middleware/errorHandler.js';
 // import trucksListRoutes from './routes/trucks/getTrucksRoute.js';
 // import truckPackagesRoutes from './routes/trucks/getTruckPackagesRoute.js';
@@ -21,7 +22,9 @@ app.get('/', (req, res) => {
 
 app.use(userRoutes);
 app.use(sensorRoutes);
-app.use(packageRoutes)
+app.use(packageRoutes);
+app.use(truckRoutes);
+
 // // Health
 // app.get('/health', (req, res) => res.json({ ok: true }));
 
