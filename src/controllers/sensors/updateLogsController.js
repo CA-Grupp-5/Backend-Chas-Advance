@@ -1,9 +1,10 @@
-import db from '../../config/db.js'; //Fel vid importering, sökvägen finns inte. Det va import db/index.js
+import db from '../../config/db.js';
+
 // import dotenv from 'dotenv';
 
 // dotenv.config();
 
-export const updateLogsController = async (req, res) => {
+export const updateLogsController = async (req, res, next) => {
   const packageId = req.params.id;
   //   const apiKey = req.headers['x-api-key'];
 
@@ -73,7 +74,6 @@ export const updateLogsController = async (req, res) => {
       logs: updateResult.rows[0],
     });
   } catch (error) {
-    console.error('Error updating logs:', error);
-    res.status(500).json({ message: 'Internal server error.' });
+    next(error);
   }
 };

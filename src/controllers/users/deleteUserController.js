@@ -1,6 +1,6 @@
 import db from '../../config/db.js';
 
-export const deleteUserController = async (req, res) => {
+export const deleteUserController = async (req, res, next) => {
   const userId = parseInt(req.params.id);
 
   if (!userId || isNaN(userId)) {
@@ -24,6 +24,6 @@ export const deleteUserController = async (req, res) => {
       user: result.rows[0],
     });
   } catch (error) {
-    res.status(500).json({ message: 'Server error', error: error.message });
+    next(error);
   }
 };
