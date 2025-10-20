@@ -2,23 +2,25 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import db from '../../config/db.js';
 import dotenv from 'dotenv';
-import logger from '../../utilities/logger.js';  
+import logger from '../../utilities/logger.js';
 
 dotenv.config();
 
 export const loginUserController = async (req, res, next) => {
   const { email, password } = req.body;
 
-    logger.info(`Login attempt for email: ${email}`);
+  logger.info(`Login attempt for email: ${email}`);
 
-    if (!email || !password) {
-      logger.warn('Login failed: missing email or password'); 
-      return res.status(400).json({
-        message: 'Email and password are required to login.',
-      });
-    }
+  if (!email || !password) {
+    logger.warn('Login failed: missing email or password');
+    return res.status(400).json({
+      message: 'Email and password are required to login.',
+    });
+  }
 
-    const userResult = await db.query('SELECT * FROM users WHERE email = $1', [email]);
+  const userResult = await db.query('SELECT * FROM users WHERE email = $1', [
+    email,
+  ]);
 
   if (!email || !password) {
     return res.status(400).json({
@@ -58,7 +60,9 @@ export const loginUserController = async (req, res, next) => {
       token,
     });
   } catch (error) {
-    logger.error(`Login error for ${req.body.email}: ${error.message}`, { stack: error.stack });
+    logger.error(`Login error for ${req.body.email}: ${error.message}`, {
+      stack: error.stack,
+    });
     next(error);
   }
 };

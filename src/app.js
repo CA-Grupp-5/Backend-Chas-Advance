@@ -12,10 +12,8 @@ dotenv.config();
 // ====== Import Routes ======
 import sensorRoutes from './routes/sensor-logs/sensorRoutes.js';
 import userRoutes from './routes/users/userRoutes.js';
-import packageRoutes from './routes/packages/packagesRoutes.js'
+import packageRoutes from './routes/packages/packagesRoutes.js';
 import truckRoutes from './routes/trucks/truckRoutes.js';
-import { errorHandler } from './middleware/errorHandler.js';
-
 
 const app = express();
 
@@ -44,7 +42,6 @@ app.use(truckRoutes);
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
-
 // ====== 404 Handler ======
 app.use((req, res) => {
   logger.warn(`404 - Not Found - ${req.originalUrl}`);
@@ -54,7 +51,9 @@ app.use((req, res) => {
 // ====== Central Error Handler ======
 app.use((err, req, res, _next) => {
   logger.error(
-    `${err.status || 500} - ${err.message} - ${req.originalUrl} - ${req.method} - ${req.ip}`,
+    `${err.status || 500} - ${err.message} - ${req.originalUrl} - ${
+      req.method
+    } - ${req.ip}`,
     { stack: err.stack }
   );
 
