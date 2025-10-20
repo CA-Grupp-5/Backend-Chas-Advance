@@ -1,4 +1,5 @@
 import express from 'express';
+
 import registerRoute from './registerRoute.js';
 import loginRoute from './loginRoute.js';
 import updateUserRoute from './updateUserRoute.js';
@@ -8,7 +9,6 @@ import getUserByIdRoute from './getUserByIdRoute.js';
 
 const router = express.Router();
 
-// Mount user-related routes
 router.use(registerRoute);
 router.use(loginRoute);
 router.use(updateUserRoute);
