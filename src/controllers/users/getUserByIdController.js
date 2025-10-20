@@ -1,6 +1,6 @@
 import db from '../../config/db.js';
 
-export const getUserByIdController = async (req, res) => {
+export const getUserByIdController = async (req, res, next) => {
   const userId = parseInt(req.params.id);
 
   if (!userId || isNaN(userId)) {
@@ -21,6 +21,6 @@ export const getUserByIdController = async (req, res) => {
 
     res.status(200).json(result.rows[0]);
   } catch {
-    res.status(500).json({ message: 'Server error', error: error.message });
+    next(error);
   }
 };

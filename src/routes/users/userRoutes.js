@@ -1,6 +1,5 @@
 import express from 'express';
 
-// Ett fel va att säkvägen va förlångt in, därav ändring
 import registerRoute from './registerRoute.js';
 import loginRoute from './loginRoute.js';
 import updateUserRoute from './updateUserRoute.js';

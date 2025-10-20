@@ -15,6 +15,11 @@ export const getPackagesController = async (req, res, next) => {
       LIMIT 200
     `;
     const { rows } = await db.query(sql);
+
+    if (rows.length === 0) {
+      return res.status(404).json({ message: 'No packages found.' });
+    }
+
     return res.status(200).json({
       message: 'Packages retrieved successfully',
       packages: rows,
