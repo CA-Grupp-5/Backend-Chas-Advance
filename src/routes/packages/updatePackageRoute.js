@@ -1,56 +1,52 @@
 import express from 'express';
-import { postPackagesController } from '../../controllers/packages/postPackagesController.js';
+import { updatePackagesController } from '../../controllers/packages/updatePackagesController.js';
 
 const router = express.Router();
 
 /**
  * @swagger
- * /api/packages:
- *   post:
- *     summary: Create a new package
- *     description: Creates a new package with sender, receiver, and optional transport and environmental parameters.
+ * /api/packages/{id}:
+ *   put:
+ *     summary: Update a package
+ *     description: Update one or more fields of a package. All fields are optional, but at least one must be provided.
  *     tags:
  *       - Packages
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: The package ID
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
  *             type: object
- *             required:
- *               - sender_id
- *               - receiver_id
  *             properties:
  *               sender_id:
  *                 type: integer
- *                 example: 1
  *               receiver_id:
  *                 type: integer
- *                 example: 2
  *               current_location:
  *                 type: string
- *                 example: "Stockholm Warehouse"
  *               status:
  *                 type: string
- *                 example: "CREATED"
+ *                 example: "IN_TRANSIT"
  *               assigned_truck_id:
  *                 type: integer
- *                 example: 12
  *               expected_temperature_min:
  *                 type: number
- *                 example: 2.5
  *               expected_temperature_max:
  *                 type: number
- *                 example: 8.0
  *               expected_humidity_min:
  *                 type: number
- *                 example: 40
  *               expected_humidity_max:
  *                 type: number
- *                 example: 60
  *     responses:
- *       201:
- *         description: Package created successfully
+ *       200:
+ *         description: Package updated successfully
  *         content:
  *           application/json:
  *             schema:
@@ -58,22 +54,28 @@ const router = express.Router();
  *               properties:
  *                 message:
  *                   type: string
- *                   example: Paket skapat!
+ *                   example: Package updated successfully
  *                 package:
  *                   type: object
  *                   properties:
  *                     id:
  *                       type: integer
+ *                     sender_id:
+ *                       type: integer
+ *                     receiver_id:
+ *                       type: integer
  *                     status:
  *                       type: string
- *                     created_at:
+ *                     updated_at:
  *                       type: string
  *                       format: date-time
  *       400:
- *         description: Missing required fields (sender_id, receiver_id)
+ *         description: Invalid ID or invalid/missing fields
+ *       404:
+ *         description: Package not found
  *       500:
  *         description: Internal server error
  */
-router.post('/packages', postPackagesController);
+router.put('/packages/:id', updatePackagesController);
 
 export default router;

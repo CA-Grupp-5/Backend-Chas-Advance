@@ -1,15 +1,15 @@
 import express from 'express';
-import dotenv from 'dotenv';
-// eventuella token
 
-// import getLogs from './getLogs.js  ';
-import postLogs from './postLogs.js';
-
-dotenv.config();
+import getLogsRoute from './getLogsRoute.js'; // Ändring hade tvåå mellanslag
+import postLogsRoute from './postLogsRoute.js';
+import deleteLogsRoute from './deleteLogsRoute.js';
+import updateLogsRoute from './updateLogsRoute.js';
 
 const router = express.Router();
 
-// router.use(getLogs);
-router.use(postLogs);
+router.use(getLogsRoute);
+router.use(postLogsRoute);
+router.use(deleteLogsRoute);
+router.use(updateLogsRoute);
 
 export default router;

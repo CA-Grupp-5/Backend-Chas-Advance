@@ -7,20 +7,30 @@ import logger from '../../utilities/logger.js';
 dotenv.config();
 
 export const loginUserController = async (req, res, next) => {
-  try {
-    const { email, password } = req.body;
+  const { email, password } = req.body;
 
-    // Log that a login attempt was made
     logger.info(`Login attempt for email: ${email}`);
 
     if (!email || !password) {
-      logger.warn('Login failed: missing email or password');  // ⚠️ warning-level log
+      logger.warn('Login failed: missing email or password'); 
       return res.status(400).json({
         message: 'Email and password are required to login.',
       });
     }
 
     const userResult = await db.query('SELECT * FROM users WHERE email = $1', [email]);
+
+  if (!email || !password) {
+    return res.status(400).json({
+      message: 'Email and password are required to login.',
+    });
+  }
+
+  try {
+    const userResult = await db.query('SELECT * FROM users WHERE email = $1', [
+      email,
+    ]);
+
     const user = userResult.rows[0];
 
     if (!user) {
@@ -28,7 +38,7 @@ export const loginUserController = async (req, res, next) => {
       return res.status(401).json({ message: 'Invalid email.' });
     }
 
-    const isPasswordValid = await bcrypt.compare(password, user.password);
+    const isPasswordValid = await bcrypt.compare(password, user.password_hash);
 
     if (!isPasswordValid) {
       logger.warn(`Login failed: invalid password for user ${email}`);

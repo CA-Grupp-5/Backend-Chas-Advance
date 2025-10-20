@@ -1,14 +1,14 @@
 import express from 'express';
-import { getPackagesByIdController } from '../../controllers/packages/getPackagesByIdController.js';
+import { deletePackageController } from '../../controllers/packages/deletePackageController.js';
 
 const router = express.Router();
 
 /**
  * @swagger
  * /api/packages/{id}:
- *   get:
- *     summary: Get a package by ID
- *     description: Retrieve a specific package by its ID, including sender and receiver names.
+ *   delete:
+ *     summary: Delete a package
+ *     description: Deletes a package by ID. Related child records are automatically removed due to cascade delete.
  *     tags:
  *       - Packages
  *     parameters:
@@ -20,7 +20,7 @@ const router = express.Router();
  *         description: The package ID
  *     responses:
  *       200:
- *         description: Package retrieved successfully
+ *         description: Package deleted successfully
  *         content:
  *           application/json:
  *             schema:
@@ -28,25 +28,17 @@ const router = express.Router();
  *               properties:
  *                 message:
  *                   type: string
- *                   example: Package retrieved successfully
+ *                   example: Package deleted successfully
  *                 package:
  *                   type: object
  *                   properties:
  *                     id:
- *                       type: integer
- *                     sender_id:
- *                       type: integer
- *                     receiver_id:
  *                       type: integer
  *                     status:
  *                       type: string
  *                     created_at:
  *                       type: string
  *                       format: date-time
- *                     sender_name:
- *                       type: string
- *                     receiver_name:
- *                       type: string
  *       400:
  *         description: Invalid package ID
  *       404:
@@ -54,6 +46,6 @@ const router = express.Router();
  *       500:
  *         description: Internal server error
  */
-router.get('/packages/:id', getPackagesByIdController);
+router.delete('/packages/:id', deletePackageController);
 
 export default router;

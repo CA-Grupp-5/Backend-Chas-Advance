@@ -4,18 +4,15 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import morgan from 'morgan';
 import logger, { stream } from './utilities/logger.js';
+import { swaggerUi, swaggerSpec } from '../swaggerConfig.js';
 
 // Load environment variables
 dotenv.config();
 
 // ====== Import Routes ======
 import sensorRoutes from './routes/sensor-logs/sensorRoutes.js';
-import registerRoute from './routes/users/registerRoute.js';
-import postPackagesRoute from './routes/packages/postPackagesRoute.js';
-import postTruckRoute from './routes/trucks/postTruckRoute.js';
-import trucksListRoutes from './routes/trucks/getTrucks.js';
-import truckPackagesRoutes from './routes/trucks/getTruckPackages.js';
-// import packagesRoutes from './routes/packages/getPackagesRoute.js'; // Add later if needed
+import userRoutes from './routes/users/userRoutesRoute.js';
+import packageRoutes from './routes/packages/packageRoutes.js';
 
 const app = express();
 
@@ -34,16 +31,15 @@ app.get('/health', (_req, res) => {
 });
 
 // ====== Basic Routes ======
-app.get('/', (req, res) => res.send('Hello world!'));
-app.get('/home', (req, res) => res.send('API is running...'));
+app.get('/', (req, res) => res.send('API is running...'));
 
 // ====== Mount Routes ======
-app.use(registerRoute);
+app.use(userRoutes);
 app.use(sensorRoutes);
-app.use(postPackagesRoute);
-app.use(postTruckRoute);
-app.use('/trucks', trucksListRoutes);        // GET /trucks
-app.use('/trucks', truckPackagesRoutes);     // GET /trucks/:id/packages
+app.use(packageRoutes);
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
 
 // ====== 404 Handler ======
 app.use((req, res) => {
