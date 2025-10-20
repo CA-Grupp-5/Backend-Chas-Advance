@@ -23,7 +23,7 @@ export const getLogsController = async (req, res, next) => {
 
     res.status(200).json({
       message: 'Sensor logs retrieved successfully',
-      logs: data,
+      logs: result.rows,
     });
   } catch (error) {
     next(error);

@@ -1,6 +1,6 @@
 import db from '../../config/db.js';
 
-export const deleteLogsController = async (req, res) => {
+export const deleteLogsController = async (req, res, next) => {
   const packageId = req.params.id;
 
   if (!packageId || isNaN(packageId)) {
@@ -33,6 +33,6 @@ export const deleteLogsController = async (req, res) => {
     res.status(200).json({ message: 'Logs deleted successfully.' });
   } catch (error) {
     console.error('Error deleting logs:', error);
-    res.status(500).json({ message: 'Internal server error.' });
+    next(error);
   }
 };
