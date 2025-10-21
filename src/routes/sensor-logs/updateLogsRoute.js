@@ -5,7 +5,7 @@ const router = express.Router();
 
 /**
  * @swagger
- * /packages/{id}/logs:
+ * /packages/{id}/logs/:
  *   put:
  *     summary: Update sensor logs for a package
  *     description: Updates temperature and/or humidity sensor logs associated with a specific package ID.
@@ -63,6 +63,6 @@ const router = express.Router();
  *       500:
  *         description: Internal server error
  */
-router.put('/packages/:id/logs', updateLogsController);
+router.put('/packages/:id/logs/update', updateLogsController);
 
 export default router;
