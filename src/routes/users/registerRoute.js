@@ -1,5 +1,9 @@
 import express from 'express';
 import { registerController } from '../../controllers/users/registerController.js';
+import {
+  registerValidationRules,
+  validateRequest,
+} from '../../middleware/registerValidator.js';
 
 const router = express.Router();
 
@@ -72,6 +76,11 @@ const router = express.Router();
  *       500:
  *         description: Server error during registration.
  */
-router.post('/auth/register', registerController);
+router.post(
+  '/auth/register',
+  registerValidationRules,
+  validateRequest,
+  registerController
+);
 
 export default router;
