@@ -29,19 +29,44 @@ describe('POST /auth/register', () => {
       .send({ email: 'test@test.com' });
 
     expect(res.statusCode).toBe(400);
-    expect(res.body.message).toBe(
-      'Name, email and password are required to register user.'
+    expect(res.body.errors).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ field: 'name', message: 'Name is required' }),
+        expect.objectContaining({
+          field: 'password',
+          message: 'Password must be at least 8 characters long.',
+        }),
+      ])
+    );
+  });
+
+  it('Should return 400 if email domain is invalid', async () => {
+    const res = await request(app).post('/auth/register').send({
+      name: 'Test User',
+      email: 'test@notallowed.com',
+      password: 'password123',
+    });
+
+    expect(res.statusCode).toBe(400);
+    expect(res.body.errors).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          field: 'email',
+          message: 'Email domain is not allowed.',
+        }),
+      ])
     );
   });
 
   it('Should register a new user and return 201 status', async () => {
     bcrypt.hash.mockResolvedValue('hashedPassword123');
-    db.query.mockResolvedValue({
+    db.query.mockResolvedValueOnce({ rows: [] }); // If no existing user
+    db.query.mockResolvedValueOnce({
       rows: [
         {
           id: 1,
           name: 'Test User',
-          email: 'test@test.com',
+          email: 'test@ica.se',
           password_hash: 'hashedPassword123',
           role: 'user',
         },
@@ -50,31 +75,54 @@ describe('POST /auth/register', () => {
 
     const res = await request(app).post('/auth/register').send({
       name: 'Test User',
-      email: 'test@test.com',
-      password: 'password123',
+      email: 'test@ica.se',
+      password: 'Password123',
     });
 
     expect(res.statusCode).toBe(201);
     expect(res.body.message).toBe('User registered successfully');
     expect(res.body.user.email).toBe('test@test.com');
-    expect(bcrypt.hash).toHaveBeenCalledWith('password123', 10);
+    expect(bcrypt.hash).toHaveBeenCalledWith('Password123', 10);
     expect(db.query).toHaveBeenCalledWith(
       expect.stringContaining('INSERT INTO users'),
-      ['Test User', 'test@test.com', 'hashedPassword123', 'user']
+      ['Test User', 'test@ica.se', 'hashedPassword123', 'user']
     );
   });
 
+  it('Should return 400 if email already exists', async () => {
+    db.query.mockResolvedValueOnce({
+      rows: [
+        {
+          id: 1,
+          name: 'Test User',
+          email: 'existingemail@ica.se',
+          password_hash: 'hashedPassword123',
+        },
+      ],
+    });
+
+    const res = await request(app).post('/auth/register').send({
+      name: 'Test User',
+      email: 'existingemail@ica.se',
+      password: 'Password123',
+    });
+
+    expect(res.statusCode).toBe(400);
+    expect(res.body.message).toBe('Email is already registered.');
+  });
+
   it('Should handle database errors and call next(error)', async () => {
-    db.query.mockRejectedValue(new Error('Databse error'));
+    db.query.mockRejectedValue(new Error('Database error'));
     bcrypt.hash.mockResolvedValue('hash');
 
     const res = await request(app).post('/auth/register').send({
       name: 'Test User',
-      email: 'test@test.com',
-      password: 'password123',
+      email: 'test@ica.se',
+      password: 'Password123',
     });
 
     expect(res.status).toBe(500);
-    expect(res.body.message).toBe('Internal server error');
+    expect(res.body.message).toBe('Server Error');
+    expect(res.body.error).toBe('Database error');
   });
 });
