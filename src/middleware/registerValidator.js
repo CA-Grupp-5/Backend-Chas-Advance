@@ -1,4 +1,9 @@
 import { body, validationResult } from 'express-validator';
+import allowedCompanies from '../config/allowedDomains.json' with { type: 'json' };
+
+const allowedDomains = allowedCompanies.map((entry) =>
+  entry.domain.toLowerCase()
+);
 
 export const registerValidationRules = [
   body('name').trim().notEmpty().withMessage('Name is required.'),
@@ -7,10 +12,14 @@ export const registerValidationRules = [
     .isEmail()
     .withMessage('Valid email is required.')
     .custom((value) => {
-      const allowedDomain = 'placeholder.com';
-      const emailDomain = value.split('@')[1];
-      if (emailDomain !== allowedDomain) {
-        throw new Error(`Email domain must be ${allowedDomain}.`);
+      const emailParts = value.split('@');
+      if (emailParts.length !== 2) {
+        throw new Error('Invalid email format.');
+      }
+
+      const domain = emailParts[1].toLowerCase();
+      if (!allowedDomains.includes(domain)) {
+        throw new Error('Email domain is not allowed.');
       }
       return true;
     }),
