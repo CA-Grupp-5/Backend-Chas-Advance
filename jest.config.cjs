@@ -1,6 +1,6 @@
-// jest.config.js
+// jest.config.cjs
 /** @type {import('jest').Config} */
-export default {
+module.exports = {
   testEnvironment: 'node',
   clearMocks: true,          // ✅
   verbose: true,
