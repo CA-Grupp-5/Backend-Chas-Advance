@@ -3,13 +3,17 @@ import request from 'supertest';
 import express from 'express';
 import postLogsRoute from '../src/routes/sensor-logs/postLogsRoute.js';
 import db from '../src/config/db';
-import { errorHandler } from '../src/middleware/errorHandler.js';
+import {
+  notFoundHandler,
+  errorHandler,
+} from '../src/middleware/errorHandler.js';
 
 jest.mock('../src/config/db');
 
 const app = express();
 app.use(express.json());
 app.use(postLogsRoute);
+app.use(notFoundHandler);
 app.use(errorHandler);
 
 describe('POST /packages/:id/logs', () => {

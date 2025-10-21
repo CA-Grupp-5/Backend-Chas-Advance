@@ -4,7 +4,10 @@ import express from 'express';
 import registerRoute from '../src/routes/users/registerRoute.js';
 import db from '../src/config/db';
 import bcrypt from 'bcryptjs';
-import { errorHandler } from '../src/middleware/errorHandler.js';
+import {
+  notFoundHandler,
+  errorHandler,
+} from '../src/middleware/errorHandler.js';
 
 jest.mock('../src/config/db');
 jest.mock('bcryptjs');
@@ -12,6 +15,7 @@ jest.mock('bcryptjs');
 const app = express();
 app.use(express.json());
 app.use(registerRoute);
+app.use(notFoundHandler);
 app.use(errorHandler);
 
 describe('POST /auth/register', () => {
