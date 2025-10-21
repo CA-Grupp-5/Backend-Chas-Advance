@@ -2,7 +2,7 @@
 import request from 'supertest';
 import express from 'express';
 import postLogsRoute from '../src/routes/sensor-logs/postLogsRoute.js';
-import db from '../src/config/db';
+import db from '../src/config/db.js';
 import { errorHandler } from '../src/middleware/errorHandler.js';
 
 jest.mock('../src/config/db');
