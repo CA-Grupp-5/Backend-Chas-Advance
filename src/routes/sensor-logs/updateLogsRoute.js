@@ -5,7 +5,7 @@ const router = express.Router();
 
 /**
  * @swagger
- * /packages/{id}/logs/update:
+ * /packages/{id}/logs/:
  *   put:
  *     summary: Update sensor logs for a package
  *     description: Updates temperature and/or humidity sensor logs associated with a specific package ID.
