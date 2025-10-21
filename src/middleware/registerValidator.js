@@ -16,7 +16,7 @@ export const registerValidationRules = [
     }),
   body('password')
     .isLength({ min: 8 })
-    .withMessage('Password must be at least 6 characters long.')
+    .withMessage('Password must be at least 8 characters long.')
     .matches(/[A-Z]/)
     .withMessage('Password must contain at least one uppercase letter.')
     .matches(/[0-9]/)
