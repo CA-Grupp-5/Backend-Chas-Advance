@@ -1,16 +1,35 @@
 //tests/app.register.test.js
+import { jest } from '@jest/globals';
 import request from 'supertest';
 import express from 'express';
-import registerRoute from '../src/routes/users/registerRoute.js';
-import db from '../src/config/db.js';
-import bcrypt from 'bcryptjs';
+// import registerRoute from '../src/routes/users/registerRoute.js';
+// import db from '../src/config/db.js';
+// import bcrypt from 'bcryptjs';
 import {
   notFoundHandler,
   errorHandler,
 } from '../src/middleware/errorHandler.js';
 
-jest.mock('../src/config/db.js');
-jest.mock('bcryptjs');
+// jest.mock('../src/config/db.js');
+// jest.mock('bcryptjs');
+
+// Mock-moduler innan import
+jest.unstable_mockModule('../src/config/db.js', () => ({
+  default: { query: jest.fn() },
+}));
+
+jest.unstable_mockModule('bcryptjs', () => ({
+  default: {
+    hash: jest.fn(),
+  },
+}));
+
+// Importera mockade moduler efter att mockningen är satt
+const { default: registerRoute } = await import(
+  '../src/routes/users/registerRoute.js'
+);
+const { default: db } = await import('../src/config/db.js');
+const { default: bcrypt } = await import('bcryptjs');
 
 const app = express();
 app.use(express.json());
