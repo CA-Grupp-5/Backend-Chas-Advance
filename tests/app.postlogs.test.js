@@ -2,13 +2,13 @@
 import request from 'supertest';
 import express from 'express';
 import postLogsRoute from '../src/routes/sensor-logs/postLogsRoute.js';
-import db from '../src/config/db';
+import db from '../src/config/db.js';
 import {
   notFoundHandler,
   errorHandler,
 } from '../src/middleware/errorHandler.js';
 
-jest.mock('../src/config/db');
+jest.mock('../src/config/db.js');
 
 const app = express();
 app.use(express.json());
