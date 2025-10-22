@@ -73,3 +73,80 @@ The PostgreSQL database is accessible with these default settings:
 - User: postgres
 - Password: password
 - Database: chas_advance_dev
+
+## Production Build
+
+To build the production image:
+
+```bash
+docker build -t backend-chas-advance:latest .
+```
+
+The production Dockerfile:
+
+- Uses multi-stage builds to minimize image siza
+- Installs only production dependencies
+- Runs with NODE_ENV=production
+- Exposes port 3000
+
+### Production Environment Variables
+
+Required environment variables for production:
+
+```
+PORT=3000
+DB_SERVER=<your-db-host>
+DB_NAME=<your-db-name>
+DB_USER=<your-db-user>
+DB_PASSWORD=<your-db-password>
+DB_PORT=5432
+JWT_SECRET=<your-jwt-secret>
+```
+
+## Maintenence
+
+### Updating Dependencies
+
+To update node_modules:
+
+```bash
+# Update in development environment
+docker compose -f docker/docker-compose.dev.yml run --rm backend npm update
+
+# Rebuild the containers after updating
+docker compose -f docker/docker-compose.dev.yml up --build
+```
+
+### Cleaning Up
+
+Remove unused Docker resources:
+
+```bash
+# Remove unused containers, networks, images
+docker system prune
+
+# Include unused volumes
+docker system prune --volumes
+```
+
+## Troubleshooting
+
+1. If the app can't connect to the database:
+
+   - Check that the DB\_\* environment variables match the postgres service settings
+   - Try waiting a few seconds for postgres to initialize
+   - Verifiy postgres logs: `docker compose -f docker/docker-compose.dev.yml logs db`
+
+2. If node_modules aren't updating:
+
+   - Remove the node_modules volume and reinstall:
+
+   ```bash
+   docker compose -f docker/docker-compose.dev.yml down -v
+   docker compose -f docker/docker-compose.dev.yml up --build
+   docker compose -f docker/docker-compose.dev.yml run --rm backend npm ci
+   ```
+
+3. For permission issues:
+   - Ensure your user has Docker permissions
+   - Check file ownership in mounted volumes
