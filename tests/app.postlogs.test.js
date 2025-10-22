@@ -73,7 +73,7 @@ describe('POST /packages/:id/logs', () => {
     expect(res.body.logs).toEqual(mockLog);
     expect(mockedDb.query).toHaveBeenCalledWith(
       expect.stringContaining('INSERT INTO sensors'),
-      [1, 20, 55]
+      ['1', 20, 55]
     );
   });
 
@@ -96,6 +96,7 @@ describe('POST /packages/:id/logs', () => {
       .send({ temperature: 20, humidity: 55 });
 
     expect(res.status).toBe(500);
-    expect(res.body.message).toBe('Internal server error');
+    expect(res.body.message).toBe('Server Error');
+    expect(res.body.error).toBe('Database error');
   });
 });

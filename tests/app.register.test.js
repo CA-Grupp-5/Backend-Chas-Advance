@@ -13,7 +13,6 @@ import {
 // jest.mock('../src/config/db.js');
 // jest.mock('bcryptjs');
 
-// Mock-moduler innan import
 jest.unstable_mockModule('../src/config/db.js', () => ({
   default: { query: jest.fn() },
 }));
@@ -24,7 +23,6 @@ jest.unstable_mockModule('bcryptjs', () => ({
   },
 }));
 
-// Importera mockade moduler efter att mockningen är satt
 const { default: registerRoute } = await import(
   '../src/routes/users/registerRoute.js'
 );
@@ -50,10 +48,25 @@ describe('POST /auth/register', () => {
     expect(res.statusCode).toBe(400);
     expect(res.body.errors).toEqual(
       expect.arrayContaining([
-        expect.objectContaining({ field: 'name', message: 'Name is required' }),
+        expect.objectContaining({
+          field: 'name',
+          message: 'Name is required.',
+        }),
+        expect.objectContaining({
+          field: 'email',
+          message: 'Email domain is not allowed.',
+        }),
         expect.objectContaining({
           field: 'password',
           message: 'Password must be at least 8 characters long.',
+        }),
+        expect.objectContaining({
+          field: 'password',
+          message: 'Password must contain at least one uppercase letter.',
+        }),
+        expect.objectContaining({
+          field: 'password',
+          message: 'Password must contain at least one number.',
         }),
       ])
     );
@@ -100,11 +113,12 @@ describe('POST /auth/register', () => {
 
     expect(res.statusCode).toBe(201);
     expect(res.body.message).toBe('User registered successfully');
-    expect(res.body.user.email).toBe('test@test.com');
+    expect(res.body.user.email).toBe('test@ica.se');
     expect(bcrypt.hash).toHaveBeenCalledWith('Password123', 10);
-    expect(db.query).toHaveBeenCalledWith(
+    expect(db.query).toHaveBeenNthCalledWith(
+      2,
       expect.stringContaining('INSERT INTO users'),
-      ['Test User', 'test@ica.se', 'hashedPassword123', 'user']
+      ['Test User', 'test@ica.se', 'hashedPassword123']
     );
   });
 
