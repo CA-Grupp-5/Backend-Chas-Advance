@@ -1,9 +1,6 @@
 # Build stage
 FROM node:22-alpine AS builder
 
-# Install dependencies for potential native builds
-RUN apk add --no-cache python3 make g++
-
 WORKDIR /app
 
 COPY package*.json ./
