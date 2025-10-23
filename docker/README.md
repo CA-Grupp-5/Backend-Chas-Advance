@@ -18,17 +18,19 @@ This guide explains how to use Docker with the backend of Group 5s contribution 
 
 2. Edit `.env` with your local settings (the database settings should match the `db` service in docker-compose.dev.yml)
 
-3. Start the development environment:
+3. Initialize node_modules (first time only):
 
-   ```bash
-   docker compose -f docker/docker-compose.dev.yml up --build
-   ```
-
-4. Initialize node_modules (first time only):
    ```bash
    docker compose -f docker/docker-compose.dev.yml run --rm backend npm ci
    ```
+
    The application will be available at:
+
+4. Start the development environment:
+
+   ```bash
+   docker compose -f docker/docker-compose.dev.yml up -d
+   ```
 
 - Backend API: http://localhost:3000
 - Database: localhost:5432
