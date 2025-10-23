@@ -10,7 +10,7 @@ const options = {
       description: 'API documentation for Group 5 Chas Advance Project.',
     },
   },
-  apis: ['./routes/**/*.js'], // Updated path to be relative to src
+  apis: ['./src/routes/**/*.js'],
 };
 
 const swaggerSpec = swaggerJsdoc(options);

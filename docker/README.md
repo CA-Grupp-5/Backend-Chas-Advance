@@ -18,7 +18,7 @@ This guide explains how to use Docker with the backend of Group 5s contribution 
 
 2. Edit `.env` with your local settings (the database settings should match the `db` service in docker-compose.dev.yml)
 
-3. Initialize node_modules (first time only):
+3. Initialize node_modules (first time only or if you cleared volumes):
 
    ```bash
    docker compose -f docker/docker-compose.dev.yml run --rm backend npm ci
