@@ -64,6 +64,9 @@ docker compose -f docker/docker-compose.dev.yml down -v
 
 # Run tests in container
 docker compose -f docker/docker-compose.dev.yml exec backend npm test
+
+# Rebuild image
+docker compose -f docker/docker-compose.dev.yml up --build
 ```
 
 ### Database Access
