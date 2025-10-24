@@ -16,15 +16,13 @@ This guide explains how to use Docker with the backend of Group 5s contribution 
    cp .env.example .env
    ```
 
-2. Edit `.env` with your local settings (the database settings should match the `db` service in docker-compose.dev.yml)
+2. Edit `.env` with Azure DB configuration.
 
 3. Initialize node_modules (first time only or if you cleared volumes):
 
    ```bash
    docker compose -f docker/docker-compose.dev.yml run --rm backend npm ci
    ```
-
-   The application will be available at:
 
 4. Start the development environment:
 
@@ -33,6 +31,7 @@ This guide explains how to use Docker with the backend of Group 5s contribution 
    ```
 
 - Backend API: http://localhost:3000
+- API Documentation http:/localhost:3000/api-docs
 
 ## Development Environment Details
 
@@ -88,12 +87,12 @@ Required environment variables for production:
 
 ```
 PORT=3000
-DB_SERVER=<your-db-host>
-DB_NAME=<your-db-name>
-DB_USER=<your-db-user>
-DB_PASSWORD=<your-db-password>
-DB_PORT=5432
 JWT_SECRET=<your-jwt-secret>
+DB_SERVER=<Azure-db-host>
+DB_NAME=<Azure-db-name>
+DB_USER=<Azure-db-user>
+DB_PASSWORD=<Azure-db-password>
+DB_PORT=5432
 ```
 
 ## Maintenence
