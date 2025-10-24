@@ -5,10 +5,13 @@ export const registerController = async (req, res, next) => {
   const { name, email, password } = req.body;
 
   try {
-    if (!name || !email || !password) {
-      return res.status(400).json({
-        message: 'Name, email and password are required to register user.',
-      });
+    const existingUser = await db.query(
+      'SELECT * FROM users WHERE email = $1',
+      [email]
+    );
+
+    if (existingUser.rows.length > 0) {
+      return res.status(400).json({ message: 'Email is already registered.' });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);

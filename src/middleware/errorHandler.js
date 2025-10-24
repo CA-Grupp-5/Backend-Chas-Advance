@@ -1,8 +1,18 @@
-export const errorHandler = (err, req, res, next) => {
-  console.error(err);
+import logger from '../utilities/logger.js';
 
-  const status = err.status || 500;
-  const message = err.message || 'Internal server error';
+export const notFoundHandler = (req, res) => {
+  logger.warn(`404 - Not Found: ${req.originalUrl}`);
+  res.status(404).json({ message: 'Resource not found' });
+};
 
-  res.status(status).json({ message });
+export const errorHandler = (err, req, res, _next) => {
+  logger.error(
+    `${err.status || 500} - ${err.message} - ${req.originalUrl} - ${
+      req.method
+    } - ${req.ip}`
+  );
+  res.status(err.status || 500).json({
+    message: 'Server Error',
+    error: err.message,
+  });
 };
