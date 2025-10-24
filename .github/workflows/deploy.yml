@@ -5,9 +5,9 @@ on:
     branches: [main, develop]
   workflow_dispatch:
 
-  permissions:
-    id-token: write
-    content: read
+permissions:
+  id-token: write
+  content: read
 
 jobs:
   build-test-and-deploy:
@@ -44,7 +44,7 @@ jobs:
         id: findapp
         shell: bash
         env:
-          APP_NAME: g5app-ctepc9hrehedf2fw
+          APP_NAME: G5App
         run: |
           echo "Söker efter app: $APP_NAME"
           RG=$(az webapp list --query "[?name=='${APP_NAME}'].resourceGroup" -o tsv)
