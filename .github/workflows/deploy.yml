@@ -44,7 +44,7 @@ jobs:
         id: findapp
         shell: bash
         env:
-          APP_NAME: g5app-ctepc9hrehedf2fw
+          APP_NAME: g5app
         run: |
           echo "Söker efter app: $APP_NAME"
           RG=$(az webapp list --query "[?name=='${APP_NAME}'].resourceGroup" -o tsv)
@@ -63,5 +63,5 @@ jobs:
       - name: Deploy to Azure App Service
         uses: azure/webapps-deploy@v3
         with:
-          app-name: g5app-ctepc9hrehedf2fw
+          app-name: g5app
           package: .
