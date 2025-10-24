@@ -2,11 +2,11 @@
 import request from 'supertest';
 import express from 'express';
 import registerRoute from '../src/routes/users/registerRoute.js';
-import db from '../src/config/db';
+import db from '../src/config/db.js';
 import bcrypt from 'bcryptjs';
 import { errorHandler } from '../src/middleware/errorHandler.js';
 
-jest.mock('../src/config/db');
+jest.mock('../src/config/db.js');
 jest.mock('bcryptjs');
 
 const app = express();

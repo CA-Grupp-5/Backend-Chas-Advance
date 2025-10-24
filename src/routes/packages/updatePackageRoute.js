@@ -5,7 +5,7 @@ const router = express.Router();
 
 /**
  * @swagger
- * /api/packages/{id}:
+ * /packages/{id}:
  *   put:
  *     summary: Update a package
  *     description: Update one or more fields of a package. All fields are optional, but at least one must be provided.

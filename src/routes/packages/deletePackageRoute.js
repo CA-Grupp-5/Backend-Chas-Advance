@@ -5,7 +5,7 @@ const router = express.Router();
 
 /**
  * @swagger
- * /api/packages/{id}:
+ * /packages/{id}:
  *   delete:
  *     summary: Delete a package
  *     description: Deletes a package by ID. Related child records are automatically removed due to cascade delete.

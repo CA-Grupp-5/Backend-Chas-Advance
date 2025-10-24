@@ -8,7 +8,7 @@
   "license": "ISC",
   "scripts": {
     "dev": "nodemon src/server.js",
-    "test": "jest --runInBand",
+    "test": "NODE_OPTIONS=--experimental-vm-modules jest --runInBand --ci",
     "start": "node src/server.js"
   },
   "dependencies": {
