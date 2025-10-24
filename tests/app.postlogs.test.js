@@ -2,23 +2,17 @@
 import { jest } from '@jest/globals';
 import request from 'supertest';
 import express from 'express';
-// import postLogsRoute from '../src/routes/sensor-logs/postLogsRoute.js';
-// import db from '../src/config/db.js';
 import {
   notFoundHandler,
   errorHandler,
 } from '../src/middleware/errorHandler.js';
 
-// jest.mock('../src/config/db.js');
-
-// 👇 ESM-kompatibel jest.mock
 jest.unstable_mockModule('../src/config/db.js', () => ({
   default: {
     query: jest.fn(),
   },
 }));
 
-// 👇 Eftersom vi mockar innan import, måste vi hämta den mockade modulen asynkront
 const { default: postLogsRoute } = await import(
   '../src/routes/sensor-logs/postLogsRoute.js'
 );
