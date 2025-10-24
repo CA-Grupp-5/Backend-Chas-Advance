@@ -18,27 +18,27 @@ This guide explains how to use Docker with the backend of Group 5s contribution 
 
 2. Edit `.env` with your local settings (the database settings should match the `db` service in docker-compose.dev.yml)
 
-3. Start the development environment:
+3. Initialize node_modules (first time only or if you cleared volumes):
 
-   ```bash
-   docker compose -f docker/docker-compose.dev.yml up --build
-   ```
-
-4. Initialize node_modules (first time only):
    ```bash
    docker compose -f docker/docker-compose.dev.yml run --rm backend npm ci
    ```
+
    The application will be available at:
 
+4. Start the development environment:
+
+   ```bash
+   docker compose -f docker/docker-compose.dev.yml up -d
+   ```
+
 - Backend API: http://localhost:3000
-- Database: localhost:5432
 
 ## Development Environment Details
 
 The development setup includes:
 
 - Hot-reloading Node.js backend
-- PostgreSQL database
 - Mounted source code for live editing
 - Named volumes for node_modules and database persistence
 
@@ -57,19 +57,83 @@ docker compose -f docker/docker-compose.dev.yml logs -f
 # Stop all services
 docker compose -f docker/docker-compose.dev.yml down
 
-# Stop and remove volumes (will clear database)
+# Stop and remove volumes
 docker compose -f docker/docker-compose.dev.yml down -v
 
 # Run tests in container
 docker compose -f docker/docker-compose.dev.yml exec backend npm test
+
+# Rebuild image
+docker compose -f docker/docker-compose.dev.yml up --build
 ```
 
-### Database Access
+## Production Build
 
-The PostgreSQL database is accessible with these default settings:
+To build the production image:
 
-- Host: localhost
-- Port: 5432
-- User: postgres
-- Password: password
-- Database: chas_advance_dev
+```bash
+docker build -t backend-chas-advance:latest .
+```
+
+The production Dockerfile:
+
+- Uses multi-stage builds to minimize image siza
+- Installs only production dependencies
+- Runs with NODE_ENV=production
+- Exposes port 3000
+
+### Production Environment Variables
+
+Required environment variables for production:
+
+```
+PORT=3000
+DB_SERVER=<your-db-host>
+DB_NAME=<your-db-name>
+DB_USER=<your-db-user>
+DB_PASSWORD=<your-db-password>
+DB_PORT=5432
+JWT_SECRET=<your-jwt-secret>
+```
+
+## Maintenence
+
+### Updating Dependencies
+
+To update node_modules:
+
+```bash
+# Update in development environment
+docker compose -f docker/docker-compose.dev.yml run --rm backend npm update
+
+# Rebuild the containers after updating
+docker compose -f docker/docker-compose.dev.yml up --build
+```
+
+### Cleaning Up
+
+Remove unused Docker resources:
+
+```bash
+# Remove unused containers, networks, images
+docker system prune
+
+# Include unused volumes
+docker system prune --volumes
+```
+
+## Troubleshooting
+
+1. If node_modules aren't updating:
+
+   - Remove the node_modules volume and reinstall:
+
+   ```bash
+   docker compose -f docker/docker-compose.dev.yml down -v
+   docker compose -f docker/docker-compose.dev.yml up --build
+   docker compose -f docker/docker-compose.dev.yml run --rm backend npm ci
+   ```
+
+2. For permission issues:
+   - Ensure your user has Docker permissions
+   - Check file ownership in mounted volumes

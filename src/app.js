@@ -5,7 +5,7 @@ import dotenv from 'dotenv';
 import morgan from 'morgan';
 import { notFoundHandler, errorHandler } from './middleware/errorHandler.js';
 import logger, { stream } from './utilities/logger.js';
-import { swaggerUi, swaggerSpec } from '../swaggerConfig.js';
+import { swaggerUi, swaggerSpec } from './utilities/swaggerConfig.js';
 
 // Load environment variables
 dotenv.config();
