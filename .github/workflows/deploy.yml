@@ -59,6 +59,9 @@ jobs:
           az webapp show -n "${APP_NAME}" -g "${RG}" \
             --query "{name:name, state:state, location:location, rg:resourceGroup}" -o table
 
+      - name: Remove runtime logs from artifact
+        run: rm -rf logs
+
       #  DEPLOY
       - name: Deploy to Azure App Service
         uses: azure/webapps-deploy@v3
