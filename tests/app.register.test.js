@@ -2,16 +2,10 @@
 import { jest } from '@jest/globals';
 import request from 'supertest';
 import express from 'express';
-// import registerRoute from '../src/routes/users/registerRoute.js';
-// import db from '../src/config/db.js';
-// import bcrypt from 'bcryptjs';
 import {
   notFoundHandler,
   errorHandler,
 } from '../src/middleware/errorHandler.js';
-
-// jest.mock('../src/config/db.js');
-// jest.mock('bcryptjs');
 
 jest.unstable_mockModule('../src/config/db.js', () => ({
   default: { query: jest.fn() },
