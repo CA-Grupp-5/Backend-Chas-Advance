@@ -33,14 +33,12 @@ This guide explains how to use Docker with the backend of Group 5s contribution 
    ```
 
 - Backend API: http://localhost:3000
-- Database: localhost:5432
 
 ## Development Environment Details
 
 The development setup includes:
 
 - Hot-reloading Node.js backend
-- PostgreSQL database
 - Mounted source code for live editing
 - Named volumes for node_modules and database persistence
 
@@ -59,7 +57,7 @@ docker compose -f docker/docker-compose.dev.yml logs -f
 # Stop all services
 docker compose -f docker/docker-compose.dev.yml down
 
-# Stop and remove volumes (will clear database)
+# Stop and remove volumes
 docker compose -f docker/docker-compose.dev.yml down -v
 
 # Run tests in container
@@ -68,16 +66,6 @@ docker compose -f docker/docker-compose.dev.yml exec backend npm test
 # Rebuild image
 docker compose -f docker/docker-compose.dev.yml up --build
 ```
-
-### Database Access
-
-The PostgreSQL database is accessible with these default settings:
-
-- Host: localhost
-- Port: 5432
-- User: postgres
-- Password: password
-- Database: chas_advance_dev
 
 ## Production Build
 
@@ -136,13 +124,7 @@ docker system prune --volumes
 
 ## Troubleshooting
 
-1. If the app can't connect to the database:
-
-   - Check that the DB\_\* environment variables match the postgres service settings
-   - Try waiting a few seconds for postgres to initialize
-   - Verifiy postgres logs: `docker compose -f docker/docker-compose.dev.yml logs db`
-
-2. If node_modules aren't updating:
+1. If node_modules aren't updating:
 
    - Remove the node_modules volume and reinstall:
 
@@ -152,6 +134,6 @@ docker system prune --volumes
    docker compose -f docker/docker-compose.dev.yml run --rm backend npm ci
    ```
 
-3. For permission issues:
+2. For permission issues:
    - Ensure your user has Docker permissions
    - Check file ownership in mounted volumes
