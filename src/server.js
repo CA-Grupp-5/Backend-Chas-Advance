@@ -7,7 +7,7 @@ const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
   console.log(
-    `Server is running on g5app-ctepc9hrehedf2fw.swedencentral-01.azurewebsites.net`
+    `✅ Server is running on http://localhost:${PORT}`
   );
   console.log('DB_USER:', process.env.DB_USER);
   console.log('DB_NAME:', process.env.DB_NAME);
