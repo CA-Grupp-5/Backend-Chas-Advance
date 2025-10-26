@@ -3,8 +3,9 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import morgan from 'morgan';
+import { notFoundHandler, errorHandler } from './middleware/errorHandler.js';
 import logger, { stream } from './utilities/logger.js';
-import { swaggerUi, swaggerSpec } from '../swaggerConfig.js';
+import { swaggerUi, swaggerSpec } from './utilities/swaggerConfig.js';
 
 // Load environment variables
 dotenv.config();
@@ -42,25 +43,7 @@ app.use(truckRoutes);
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
-// ====== 404 Handler ======
-app.use((req, res) => {
-  logger.warn(`404 - Not Found - ${req.originalUrl}`);
-  res.status(404).json({ message: 'Not found' });
-});
-
-// ====== Central Error Handler ======
-app.use((err, req, res, _next) => {
-  logger.error(
-    `${err.status || 500} - ${err.message} - ${req.originalUrl} - ${
-      req.method
-    } - ${req.ip}`,
-    { stack: err.stack }
-  );
-
-  res.status(err.status || 500).json({
-    message: 'Server error',
-    detail: err.message,
-  });
-});
+app.use(notFoundHandler);
+app.use(errorHandler);
 
 export default app;

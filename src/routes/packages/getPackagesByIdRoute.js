@@ -5,7 +5,7 @@ const router = express.Router();
 
 /**
  * @swagger
- * /api/packages/{id}:
+ * /packages/{id}:
  *   get:
  *     summary: Get a package by ID
  *     description: Retrieve a specific package by its ID, including sender and receiver names.

@@ -5,7 +5,7 @@ const router = express.Router();
 
 /**
  * @swagger
- * /api/packages:
+ * /packages:
  *   post:
  *     summary: Create a new package
  *     description: Creates a new package with sender, receiver, and optional transport and environmental parameters.

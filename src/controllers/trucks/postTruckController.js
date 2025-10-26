@@ -25,11 +25,7 @@ export const postTruckController = async (req, res, next) => {
       VALUES ($1, $2, $3)
       RETURNING *;
     `;
-    const values = [
-      license_plate,
-      driver_id ?? null,
-      status ?? 'ACTIVE',
-    ];
+    const values = [license_plate, driver_id ?? null, status ?? 'ACTIVE'];
 
     const { rows } = await pool.query(query, values);
 
@@ -39,7 +35,7 @@ export const postTruckController = async (req, res, next) => {
       });
     }
 
-    res.status(201).json({
+    res.status(200).json({
       message: 'Truck skapad!',
       truck: rows[0],
     });

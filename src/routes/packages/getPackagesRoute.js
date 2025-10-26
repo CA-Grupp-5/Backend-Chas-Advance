@@ -5,7 +5,7 @@ const router = express.Router();
 
 /**
  * @swagger
- * /api/packages:
+ * /packages:
  *   get:
  *     summary: Retrieve all packages
  *     description: Returns a list of up to 200 most recently created packages, including sender and receiver names.

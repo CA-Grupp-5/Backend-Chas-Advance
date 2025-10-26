@@ -47,4 +47,4 @@ Thumbs.db
 .vscode/
 .idea/
 *.sublime-workspace
-*.sublime-project
+*.sublime-project-e "logs/\n*.log" 
