@@ -1,15 +1,27 @@
 //tests/app.postlogs.test.js
+import { jest } from '@jest/globals';
 import request from 'supertest';
 import express from 'express';
-import postLogsRoute from '../src/routes/sensor-logs/postLogsRoute.js';
-import db from '../src/config/db';
-import { errorHandler } from '../src/middleware/errorHandler.js';
+import {
+  notFoundHandler,
+  errorHandler,
+} from '../src/middleware/errorHandler.js';
 
-jest.mock('../src/config/db');
+jest.unstable_mockModule('../src/config/db.js', () => ({
+  default: {
+    query: jest.fn(),
+  },
+}));
+
+const { default: postLogsRoute } = await import(
+  '../src/routes/sensor-logs/postLogsRoute.js'
+);
+const { default: mockedDb } = await import('../src/config/db.js');
 
 const app = express();
 app.use(express.json());
 app.use(postLogsRoute);
+app.use(notFoundHandler);
 app.use(errorHandler);
 
 describe('POST /packages/:id/logs', () => {
@@ -44,7 +56,7 @@ describe('POST /packages/:id/logs', () => {
       timestamp: '2025-10-16T12:00:00Z',
     };
 
-    db.query.mockResolvedValue({ rows: [mockLog] });
+    mockedDb.query.mockResolvedValue({ rows: [mockLog] });
 
     const res = await request(app)
       .post('/packages/1/logs')
@@ -53,14 +65,14 @@ describe('POST /packages/:id/logs', () => {
     expect(res.status).toBe(201);
     expect(res.body.message).toBe('Sensor logs added successfully');
     expect(res.body.logs).toEqual(mockLog);
-    expect(db.query).toHaveBeenCalledWith(
+    expect(mockedDb.query).toHaveBeenCalledWith(
       expect.stringContaining('INSERT INTO sensors'),
-      [1, 20, 55]
+      ['1', 20, 55]
     );
   });
 
   it('Should return 500 error if insert is failed and does not return a value', async () => {
-    db.query.mockResolvedValue({ rows: [] });
+    mockedDb.query.mockResolvedValue({ rows: [] });
 
     const res = await request(app)
       .post('/packages/1/logs')
@@ -71,13 +83,14 @@ describe('POST /packages/:id/logs', () => {
   });
 
   it('Should handle database errors and call next(error)', async () => {
-    db.query.mockRejectedValue(new Error('Database error'));
+    mockedDb.query.mockRejectedValue(new Error('Database error'));
 
     const res = await request(app)
       .post('/packages/1/logs')
       .send({ temperature: 20, humidity: 55 });
 
     expect(res.status).toBe(500);
-    expect(res.body.message).toBe('Internal server error');
+    expect(res.body.message).toBe('Server Error');
+    expect(res.body.error).toBe('Database error');
   });
 });

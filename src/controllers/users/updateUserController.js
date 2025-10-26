@@ -1,7 +1,7 @@
 import db from '../../config/db.js';
 import bcrypt from 'bcryptjs';
 
-export const updateUserController = async (req, res) => {
+export const updateUserController = async (req, res, next) => {
   const userId = req.params.id;
   const { name, email, password, role } = req.body;
 
@@ -77,6 +77,6 @@ export const updateUserController = async (req, res) => {
       user: result.rows[0],
     });
   } catch (error) {
-    res.status(500).json({ message: 'Server error', error: error.message });
+    next(error);
   }
 };

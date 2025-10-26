@@ -11,7 +11,7 @@ export const getLogsController = async (req, res, next) => {
 
   try {
     const result = await db.query(
-      `SELECT * FROM package_logs WHERE package_id = $1 ORDER BY timestamp DESC`,
+      `SELECT * FROM sensors WHERE package_id = $1 ORDER BY timestamp DESC`,
       [packageId]
     );
 
@@ -23,7 +23,7 @@ export const getLogsController = async (req, res, next) => {
 
     res.status(200).json({
       message: 'Sensor logs retrieved successfully',
-      logs: data,
+      logs: result.rows,
     });
   } catch (error) {
     next(error);

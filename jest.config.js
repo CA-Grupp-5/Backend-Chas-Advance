@@ -1,7 +1,8 @@
-//jest.config.js
 /** @type {import('jest').Config} */
-module.exports = {
+export default {
   testEnvironment: 'node',
-  clearmocks: true,
+  clearMocks: true,
   verbose: true,
+
+  testMatch: ['**/tests/**/*.test.js'],
 };

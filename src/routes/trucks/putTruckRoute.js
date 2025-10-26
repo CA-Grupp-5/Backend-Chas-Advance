@@ -1,17 +1,24 @@
-//postTruckRoute.js
+//putTruckRoute.js
 import express from 'express';
-import { postTruckController } from '../../controllers/trucks/postTruckController.js';
+import { updateTruckController } from '../../controllers/trucks/updateTruckController.js';
 
 const router = express.Router();
 
 /**
  * @swagger
- * /trucks:
- *   post:
- *     summary: Adds a new truck
- *     description: Adding a new truck to the system based on the provided data.
+ * /trucks/{id}:
+ *   put:
+ *     summary: Updates truck data
+ *     description: Updates the information of a specific truck based on the provided ID.
  *     tags:
  *       - Trucks
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: ID of the truck to update
  *     requestBody:
  *       required: true
  *       content:
@@ -34,12 +41,14 @@ const router = express.Router();
  *                 example: ACTIVE
  *     responses:
  *       200:
- *         description: Successfully created truck
+ *         description: Successfully updated truck information
  *       400:
  *         description: Bad request - invalid or missing input data
+ *       404:
+ *         description: Truck not found
  *       500:
  *         description: Internal server error
  */
-router.post('/trucks', postTruckController);
+router.put('/trucks/:id', updateTruckController);
 
 export default router;
