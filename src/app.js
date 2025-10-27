@@ -15,6 +15,7 @@ import sensorRoutes from './routes/sensor-logs/sensorRoutes.js';
 import userRoutes from './routes/users/userRoutes.js';
 import packageRoutes from './routes/packages/packagesRoutes.js';
 import truckRoutes from './routes/trucks/truckRoutes.js';
+import shipmentRoutes from './routes/shipments/shipmentRoutes.js';
 
 const app = express();
 
@@ -40,6 +41,7 @@ app.use(userRoutes);
 app.use(sensorRoutes);
 app.use(packageRoutes);
 app.use(truckRoutes);
+app.use(shipmentRoutes);
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 

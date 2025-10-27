@@ -10,6 +10,16 @@ export const getLogsController = async (req, res, next) => {
   }
 
   try {
+    const packageExists = await db.query(
+      'SELECT * FROM packages WHERE id = $1',
+      [packageId]
+    );
+
+    if (packageExists.rows.length === 0) {
+      return res.status(404).json({
+        message: 'Package not found.',
+      });
+    }
     const result = await db.query(
       `SELECT * FROM sensors WHERE package_id = $1 ORDER BY timestamp DESC`,
       [packageId]
