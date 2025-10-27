@@ -47,7 +47,7 @@ describe('POST /auth/login', () => {
   });
 
   it('returns 401 when user is not found', async () => {
-    // Din controller gör två SELECT just nu
+
     db.query
       .mockResolvedValueOnce({ rows: [], rowCount: 0 })
       .mockResolvedValueOnce({ rows: [], rowCount: 0 });
