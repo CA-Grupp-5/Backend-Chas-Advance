@@ -26,6 +26,17 @@ export const postLogsController = async (req, res, next) => {
   }
 
   try {
+    const packageExists = await db.query(
+      'SELECT * FROM packages WHERE id = $1',
+      [packageId]
+    );
+
+    if (packageExists.rows.length === 0) {
+      return res.status(404).json({
+        message: 'Package not found.',
+      });
+    }
+
     const result = await db.query(
       `INSERT INTO sensors (package_id, temperature, humidity, timestamp)
              VALUES ($1, $2, $3, NOW()) RETURNING *`,
@@ -38,7 +49,7 @@ export const postLogsController = async (req, res, next) => {
       return res.status(500).json({ message: 'Failed to insert sensor log.' });
     }
 
-    res.status(201).json({
+    res.status(200).json({
       message: 'Sensor logs added successfully',
       logs: insertedLog,
     });
