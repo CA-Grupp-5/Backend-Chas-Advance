@@ -9,9 +9,9 @@ export const postShipmentController = async (req, res, next) => {
     });
   }
 
-  const { tracking_code } = req.body;
+  const { tracking_code, printed } = req.body;
 
-  if (!tracking_code) {
+  if (!tracking_code || printed === undefined) {
     return res.status(400).json({
       message: 'Tracking code and printed status are required.',
     });
@@ -19,25 +19,32 @@ export const postShipmentController = async (req, res, next) => {
 
   try {
     const packageExists = await db.query(
-      'SELECT * FROM packages WHERE id = $1',
+      'SELECT EXISTS (SELECT 1 FROM packages WHERE id = $1)',
       [packageId]
     );
 
-    if (packageExists.rows.length === 0) {
+    if (!packageExists.rows[0].exists) {
       return res.status(404).json({
         message: 'Package not found.',
       });
     }
 
-    if (packageExists.rows.length > 1) {
+    const shipmentExists = await db.query(
+      'SELECT EXISTS (SELECT 1 FROM shipments WHERE package_id = $1)',
+      [packageId]
+    );
+
+    if (shipmentExists.rows[0].exists) {
       return res.status(400).json({
         message: 'Shipment for this package already exists.',
       });
     }
 
+    const printedValue = printed ? 'NOW()' : 'NULL';
+
     const result = await db.query(
       `INSERT INTO shipments (package_id, tracking_code, printed, created_at)
-             VALUES ($1, $2, NOW(), NOW()) RETURNING *`,
+             VALUES ($1, $2, ${printedValue}, NOW()) RETURNING *`,
       [packageId, tracking_code]
     );
 
