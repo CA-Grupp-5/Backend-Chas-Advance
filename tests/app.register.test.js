@@ -84,7 +84,7 @@ describe('POST /auth/register', () => {
     );
   });
 
-  it('Should register a new user and return 201 status', async () => {
+  it('Should register a new user and return 200 status', async () => {
     bcrypt.hash.mockResolvedValue('hashedPassword123');
     db.query.mockResolvedValueOnce({ rows: [] }); // If no existing user
     db.query.mockResolvedValueOnce({
@@ -105,7 +105,7 @@ describe('POST /auth/register', () => {
       password: 'Password123',
     });
 
-    expect(res.statusCode).toBe(201);
+    expect(res.statusCode).toBe(200);
     expect(res.body.message).toBe('User registered successfully');
     expect(res.body.user.email).toBe('test@ica.se');
     expect(bcrypt.hash).toHaveBeenCalledWith('Password123', 10);

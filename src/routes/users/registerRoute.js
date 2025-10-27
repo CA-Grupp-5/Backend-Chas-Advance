@@ -38,7 +38,7 @@ const router = express.Router();
  *                 format: password
  *                 example: mySecurePassword123
  *     responses:
- *       201:
+ *       200:
  *         description: User registered successfully.
  *         content:
  *           application/json:
