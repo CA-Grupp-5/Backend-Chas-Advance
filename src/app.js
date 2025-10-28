@@ -22,6 +22,7 @@ import postNotificationsRoute from './routes/notifications/postNotificationsRout
 // import postPackagesRoute from './routes/packages/postPackagesRoute.js';
 // import postTruckRoute from './routes/trucks/postTruckRoute.js';
 import truckRoutes from './routes/trucks/truckRoutes.js';
+import shipmentRoutes from './routes/shipments/shipmentRoutes.js';
 
 const app = express();
 
@@ -51,6 +52,7 @@ app.use('/notifications', postNotificationsRoute);
 // // Health
 // app.get('/health', (req, res) => res.json({ ok: true }));
 app.use(truckRoutes);
+app.use(shipmentRoutes);
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 

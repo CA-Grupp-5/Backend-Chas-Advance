@@ -19,7 +19,19 @@ export const postLogsController = async (req, res, next) => {
   }
 
   try {
-    // 1️⃣ Insert the sensor log
+    // Package existence check from develop branch
+    const packageExists = await db.query(
+      'SELECT * FROM packages WHERE id = $1',
+      [packageId]
+    );
+
+    if (packageExists.rows.length === 0) {
+      return res.status(404).json({
+        message: 'Package not found.',
+      });
+    }
+
+    // Insert the sensor log
     const result = await db.query(
       `INSERT INTO sensors (package_id, temperature, humidity, timestamp)
        VALUES ($1, $2, $3, NOW()) RETURNING *`,
@@ -31,7 +43,7 @@ export const postLogsController = async (req, res, next) => {
       return res.status(500).json({ message: 'Failed to insert sensor log.' });
     }
 
-    // 2️⃣ Check for abnormal values and create notifications
+    // Check for abnormal values and create notifications
     const notifications = [];
 
     // Safe ranges can be adjusted as needed
@@ -49,7 +61,7 @@ export const postLogsController = async (req, res, next) => {
       });
     }
 
-    // 3️⃣ Save notifications in DB if any
+    // Save notifications in DB if any
     for (const note of notifications) {
       await createNotification(
         1, // 🔹 replace with real user_id (e.g., from package owner)
@@ -59,8 +71,8 @@ export const postLogsController = async (req, res, next) => {
       );
     }
 
-    // 4️⃣ Return success
-    res.status(201).json({
+    // Return success - using develop branch's 200 status but with enhanced response
+    res.status(200).json({
       message: 'Sensor logs added successfully',
       logs: insertedLog,
       notificationsCreated: notifications.length,

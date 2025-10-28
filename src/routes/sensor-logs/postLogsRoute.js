@@ -35,7 +35,7 @@ const router = express.Router();
  *                 type: number
  *                 example: 50
  *     responses:
- *       201:
+ *       200:
  *         description: Sensor logs have been successfully added to the database.
  *         content:
  *           application/json:

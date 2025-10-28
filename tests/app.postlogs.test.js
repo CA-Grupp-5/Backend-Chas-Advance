@@ -47,7 +47,16 @@ describe('POST /packages/:id/logs', () => {
     expect(res.body.message).toBe('Temperature and humidity are required.');
   });
 
-  it('Should insert sensor logs and return 201 status', async () => {
+  it('Should return 404 if package with the inserted ID does not exist', async () => {
+    mockedDb.query.mockResolvedValue({ rows: [] });
+
+    const res = await request(app)
+      .post('/packages/999/logs')
+      .send({ temperature: 20, humidity: 55 });
+  });
+
+  it('Should insert sensor logs and return 200 status', async () => {
+    const mockPackage = { id: 1 };
     const mockLog = {
       id: 1,
       package_id: 1,
@@ -56,13 +65,14 @@ describe('POST /packages/:id/logs', () => {
       timestamp: '2025-10-16T12:00:00Z',
     };
 
-    mockedDb.query.mockResolvedValue({ rows: [mockLog] });
+    mockedDb.query.mockResolvedValueOnce({ rows: [mockPackage] });
+    mockedDb.query.mockResolvedValueOnce({ rows: [mockLog] });
 
     const res = await request(app)
       .post('/packages/1/logs')
       .send({ temperature: 20, humidity: 55 });
 
-    expect(res.status).toBe(201);
+    expect(res.status).toBe(200);
     expect(res.body.message).toBe('Sensor logs added successfully');
     expect(res.body.logs).toEqual(mockLog);
     expect(mockedDb.query).toHaveBeenCalledWith(
@@ -72,10 +82,12 @@ describe('POST /packages/:id/logs', () => {
   });
 
   it('Should return 500 error if insert is failed and does not return a value', async () => {
-    mockedDb.query.mockResolvedValue({ rows: [] });
+    const mockPackage = { id: 4 };
+    mockedDb.query.mockResolvedValueOnce({ rows: [mockPackage] });
+    mockedDb.query.mockResolvedValueOnce({ rows: [] });
 
     const res = await request(app)
-      .post('/packages/1/logs')
+      .post('/packages/4/logs')
       .send({ temperature: 20, humidity: 55 });
 
     expect(res.status).toBe(500);
