@@ -10,13 +10,9 @@ const options = {
   definition: {
     openapi: '3.0.0',
     info: {
-      title: 'API Documentation',
+      title: 'API documentation for Group 5 Chas Advance Project.',
       version: '1.0.0',
       description: `
-### Group 5 Chas Advance Project API
-
-This API allows user registration and authentication.
-
 #### Allowed Email Domains for Registration
 
 Only users with email addresses belonging to the following company domains may register:
