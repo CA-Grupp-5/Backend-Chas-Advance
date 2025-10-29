@@ -1,8 +1,6 @@
 // src/controllers/packages/scanPackagesController.js
 // "Skanna" ett paket = uppdatera status till SCANNED och sätt updated_at.
 // Hålls medvetet enkel för att testa i Postman.
-// (Vill du även skapa en shipment med tracking_code – se kommenterad del nedan.)
-
 import db from '../../config/db.js';
 
 export const scanPackagesController = async (req, res, next) => {

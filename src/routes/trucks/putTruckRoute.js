@@ -39,6 +39,20 @@ const router = express.Router();
  *               status:
  *                 type: string
  *                 example: ACTIVE
+ *               driver_position:
+ *                 type: object
+ *                 nullable: true
+ *                 properties:
+ *                   lat:
+ *                     type: number
+ *                     example: 57.70887
+ *                   lng:
+ *                     type: number
+ *                     example: 11.97456
+ *                   ts:
+ *                     type: string
+ *                     format: date-time
+ *                     example: "2025-10-29T12:00:00Z"
  *     responses:
  *       200:
  *         description: Successfully updated truck information
