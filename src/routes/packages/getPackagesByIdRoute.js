@@ -57,6 +57,21 @@ const router = express.Router();
  *                       type: string
  *                       format: date-time
  *                       nullable: true
+ *                     driver_position:
+ *                       type: object
+ *                       nullable: true
+ *                       description: Live position of the truck transporting the package
+ *                       properties:
+ *                         lat:
+ *                           type: number
+ *                           example: 59.334591
+ *                         lng:
+ *                           type: number
+ *                           example: 18.06324
+ *                         ts:
+ *                           type: string
+ *                           format: date-time
+ *                           example: "2025-10-29T12:00:00Z"
  *       400:
  *         description: Invalid package ID
  *       404:

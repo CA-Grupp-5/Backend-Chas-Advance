@@ -8,6 +8,7 @@ export const listTrucks = async (req, res, next) => {
       lp.id, 
       lp.license_plate, 
       lp.status,
+      lp.driver_position,
       u.id AS driver_id, 
       u.name AS driver_name
       FROM license_plate lp

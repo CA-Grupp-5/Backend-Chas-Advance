@@ -12,10 +12,12 @@ export const getPackagesByIdController = async (req, res, next) => {
       SELECT
         p.*,
         us.name AS sender_name,
-        ur.name AS receiver_name
+        ur.name AS receiver_name,
+        lp.driver_position
       FROM packages p
       LEFT JOIN users us ON us.id = p.sender_id
       LEFT JOIN users ur ON ur.id = p.receiver_id
+      LEFT JOIN license_plate lp ON lp.id = p.assigned_truck_id
       WHERE p.id = $1
       LIMIT 1
     `;

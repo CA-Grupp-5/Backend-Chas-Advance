@@ -7,10 +7,15 @@ import pool from '../../config/db.js';
  *   "license_plate": "ABC123",
  *   "driver_id": 1,           // valfritt
  *   "status": "ACTIVE"        // valfritt
+ *   "driver_position": {
+ *      "lat": 59.334591,
+ *      "lng": 18.06324,
+ *      "ts": 2025-10-29T10:35:00Z"
+ *   }
  * }
  */
 export const postTruckController = async (req, res, next) => {
-  const { license_plate, driver_id, status } = req.body;
+  const { license_plate, driver_id, status, driver_position } = req.body;
 
   // --- Enkel validering ---
   if (!license_plate) {
@@ -19,10 +24,26 @@ export const postTruckController = async (req, res, next) => {
     });
   }
 
+  let driverPosValue = null;
+  if (driver_position !== undefined && driver_position !== null) {
+    if (
+      typeof driver_position !== 'object' ||
+      driver_position.lat === undefined ||
+      driver_position.lng === undefined ||
+      Number.isNaN(Number(driver_position.at)) ||
+      Number.isNaN(Number(driver_position.lng))
+    ) {
+      return res.status(400).json({
+        message: 'driver_position måste vara ett objekt {lat:number, lng: number, ts?:string} eller null.'
+      });
+    }
+    driverPosValue = driver_position;
+  }
+
   try {
     const query = `
-      INSERT INTO "license_plate" (license_plate, driver_id, status)
-      VALUES ($1, $2, $3)
+      INSERT INTO "license_plate" (license_plate, driver_id, status, driver_position)
+      VALUES ($1, $2, $3, $4)
       RETURNING *;
     `;
     const values = [license_plate, driver_id ?? null, status ?? 'ACTIVE'];

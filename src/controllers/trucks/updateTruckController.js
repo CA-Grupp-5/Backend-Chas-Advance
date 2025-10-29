@@ -61,16 +61,35 @@ export const updateTruckController = async (req, res, next) => {
     }
   }
 
+  if (Object.prototype.hasOwnProperty.call(req.body, 'driver_position')){
+    const pos = req.body.driver_position;
+    if (pos == null) {
+      updateTruckController.push('driver_position = NULL');
+    } else {
+      if (
+        typeof pos !== 'object' ||
+        pos.lat === undefined ||
+        pos.lng === undefined ||
+        Number.isNaN(Number(pos.at)) ||
+        Number.isNaN(Number(pos.lng))
+      ) {
+        return res.status(400).json({
+          message: 'driver_position måste vara ett objekt {lat:number, lng:number, ts=:string}',
+        });
+      }
+      updates.push('driver_position = $${i++}');
+      values.push(pos);
+    }
+  }
+
   // Om inget giltigt fält skickades -> 400
   if (updates.length === 0) {
     return res.status(400).json({
       message:
-        'Provide at least one field to update (license_plate, driver_id, status).',
+        'Provide at least one field to update (license_plate, driver_id, status, driver_position).',
     });
   }
 
-  // (Valfritt) om du har kolumnen updated_at, lägg till den:
-  // updates.push('updated_at = NOW()');
 
   // id till WHERE som sista parameter
   values.push(truckId);

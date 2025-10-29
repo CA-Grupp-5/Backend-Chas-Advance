@@ -9,7 +9,6 @@ import deleteTruckRoute from './deleteTruckRoute.js';
 
 const router = Router();
 
-// Viktigt: använd alltid routers här – INTE controllers
 router.use(getTrucksRoute);
 router.use(getTruckPackagesRoute);
 router.use(postTruckRoute);
