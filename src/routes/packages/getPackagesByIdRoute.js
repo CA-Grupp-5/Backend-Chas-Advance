@@ -47,6 +47,16 @@ const router = express.Router();
  *                       type: string
  *                     receiver_name:
  *                       type: string
+ *                     current_temperature:
+ *                       type: number
+ *                       nullable: true
+ *                     current_humidity:
+ *                       type: number
+ *                       nullable: true
+ *                     last_sensor_at:
+ *                       type: string
+ *                       format: date-time
+ *                       nullable: true
  *       400:
  *         description: Invalid package ID
  *       404:
