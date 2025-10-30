@@ -80,7 +80,6 @@ const router = express.Router();
  *       500:
  *         description: Internal server error
  */
-
 router.post('/', async (req, res) => {
   const { user_id, package_id, type, message } = req.body;
 
