@@ -19,7 +19,6 @@ export const postLogsController = async (req, res, next) => {
   }
 
   try {
-    // 1️⃣ Get package info including expected min/max ranges
     const pkgResult = await db.query(
       `SELECT 
          sender_id AS user_id,
@@ -38,7 +37,6 @@ export const postLogsController = async (req, res, next) => {
 
     const pkg = pkgResult.rows[0];
 
-    // 2️⃣ Insert the new sensor log
     const result = await db.query(
       `INSERT INTO sensors (package_id, temperature, humidity, timestamp)
        VALUES ($1, $2, $3, NOW())
@@ -51,24 +49,28 @@ export const postLogsController = async (req, res, next) => {
       return res.status(500).json({ message: 'Failed to insert sensor log.' });
     }
 
-    // 3️⃣ Compare readings with expected ranges
     const notifications = [];
 
-    if (temperature > pkg.expected_temperature_max || temperature < pkg.expected_temperature_min) {
+    if (
+      temperature > pkg.expected_temperature_max ||
+      temperature < pkg.expected_temperature_min
+    ) {
       notifications.push({
         type: 'THRESHOLD_BREACH',
         message: `Temperature (${temperature}°C) out of expected range [${pkg.expected_temperature_min}°C - ${pkg.expected_temperature_max}°C]`,
       });
     }
 
-    if (humidity > pkg.expected_humidity_max || humidity < pkg.expected_humidity_min) {
+    if (
+      humidity > pkg.expected_humidity_max ||
+      humidity < pkg.expected_humidity_min
+    ) {
       notifications.push({
         type: 'THRESHOLD_BREACH',
         message: `Humidity (${humidity}%) out of expected range [${pkg.expected_humidity_min}% - ${pkg.expected_humidity_max}%]`,
       });
     }
 
-    // 4️⃣ Create notifications in the DB if needed
     for (const note of notifications) {
       await createNotification(pkg.user_id, packageId, note.type, note.message);
     }
@@ -78,7 +80,10 @@ export const postLogsController = async (req, res, next) => {
       message: 'Sensor log added successfully.',
       log: insertedLog,
       notificationsCreated: notifications.length,
-      details: notifications.length > 0 ? notifications : ['All readings within expected range.'],
+      details:
+        notifications.length > 0
+          ? notifications
+          : ['All readings within expected range.'],
     });
   } catch (error) {
     console.error('Error in postLogsController:', error);

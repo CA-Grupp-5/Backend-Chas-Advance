@@ -73,7 +73,7 @@ describe('POST /packages/:id/logs', () => {
       .send({ temperature: 20, humidity: 55 });
 
     expect(res.status).toBe(200);
-    expect(res.body.message).toBe('Sensor logs added successfully');
+    expect(res.body.message).toBe('Sensor logs added successfully.');
     expect(res.body.logs).toEqual(mockLog);
     expect(mockedDb.query).toHaveBeenCalledWith(
       expect.stringContaining('INSERT INTO sensors'),
