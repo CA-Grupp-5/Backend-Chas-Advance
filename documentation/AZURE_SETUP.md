@@ -76,3 +76,13 @@ const pool = new Pool({
   port: process.env.DB_PORT,
   ssl: { rejectUnauthorized: false },
 });
+
+3.3 Säkerhet och SSL
+
+Azure PostgreSQL kräver SSL (DBSSLMODE=require) för alla anslutningar.
+Alla dataöverföringar sker krypterat.
+
+3.4 Backup och återställning
+
+Azure hanterar automatiska backupper enligt konfiguration (7–35 dagar).
+Backup-policy kan justeras i Azure Portal → Flexible Server → Backups.
