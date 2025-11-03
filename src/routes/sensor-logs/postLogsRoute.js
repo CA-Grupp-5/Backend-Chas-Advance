@@ -7,17 +7,17 @@ const router = express.Router();
  * @swagger
  * /packages/{id}/logs:
  *   post:
- *     summary: Post sensor logs for a package
- *     description: Posts sensor logs associated with a specific package ID from ESP.
+ *     summary: Add sensor log for a package
+ *     description: Records temperature and humidity readings for a package and creates notifications if values exceed expected ranges
  *     tags:
- *       - Sensor Logs
+ *       - Sensors
  *     parameters:
  *       - in: path
  *         name: id
  *         required: true
  *         schema:
  *           type: integer
- *         description: The ID of the package.
+ *         description: Package ID
  *     requestBody:
  *       required: true
  *       content:
@@ -30,13 +30,15 @@ const router = express.Router();
  *             properties:
  *               temperature:
  *                 type: number
- *                 example: 20
+ *                 example: 10
+ *                 description: Temperature in Celsius
  *               humidity:
  *                 type: number
- *                 example: 50
+ *                 example: 80
+ *                 description: Humidity percentage
  *     responses:
  *       200:
- *         description: Sensor logs have been successfully added to the database.
+ *         description: Sensor log added successfully
  *         content:
  *           application/json:
  *             schema:
@@ -44,28 +46,40 @@ const router = express.Router();
  *               properties:
  *                 message:
  *                   type: string
- *                   example: Sensor logs added successfully
- *                 logs:
+ *                   example: Sensor log added successfully.
+ *                 log:
  *                   type: object
  *                   properties:
  *                     id:
  *                       type: integer
- *                       example: 1
  *                     package_id:
  *                       type: integer
- *                       example: 1
  *                     temperature:
  *                       type: number
- *                       example: 20
  *                     humidity:
  *                       type: number
- *                       example: 50
  *                     timestamp:
  *                       type: string
  *                       format: date-time
- *                       example: '2023-10-01T12:00:00Z'
+ *                 notificationsCreated:
+ *                   type: integer
+ *                   example: 2
+ *                 details:
+ *                   type: array
+ *                   items:
+ *                     oneOf:
+ *                       - type: object
+ *                         properties:
+ *                           type:
+ *                             type: string
+ *                             example: THRESHOLD_BREACH
+ *                           message:
+ *                             type: string
+ *                             example: Temperature (10°C) out of expected range [15°C - 25°C]
+ *                       - type: string
+ *                         example: All readings within expected range.
  *       400:
- *         description: Bad request. Missing or invalid parameters.
+ *         description: Invalid input
  *         content:
  *           application/json:
  *             schema:
@@ -73,17 +87,19 @@ const router = express.Router();
  *               properties:
  *                 message:
  *                   type: string
- *                   example: A valid package ID is required.
+ *                   example: Temperature and humidity are required.
+ *       404:
+ *         description: Package not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Package not found.
  *       500:
- *         description: Server error while adding sensor logs.
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: Internal server error.
+ *         description: Server error
  */
 router.post('/packages/:id/logs', postLogsController);
 
