@@ -64,7 +64,6 @@ export const postPackagesController = async (req, res, next) => {
       expected_temperature_max ?? null,
       expected_humidity_min ?? null,
       expected_humidity_max ?? null,
-      delivered_at ?? null
     ];
 
     // kör query
