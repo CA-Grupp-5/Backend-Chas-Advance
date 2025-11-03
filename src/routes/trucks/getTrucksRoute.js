@@ -62,6 +62,6 @@ const router = Router();
  *         description: Internal server error
  */
 
-router.get('/trucks', listTrucks); // => GET /trucks
+router.get('/trucks', listTrucks);
 
 export default router;

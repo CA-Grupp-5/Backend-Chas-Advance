@@ -1,6 +1,5 @@
 // src/controllers/packages/scanPackagesController.js
-// "Skanna" ett paket = uppdatera status till SCANNED och sätt updated_at.
-// Hålls medvetet enkel för att testa i Postman.
+
 import db from '../../config/db.js';
 
 export const scanPackagesController = async (req, res, next) => {
