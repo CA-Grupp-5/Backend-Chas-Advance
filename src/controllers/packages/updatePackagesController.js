@@ -3,13 +3,13 @@
 import pool from '../../config/db.js';
 
 export const updatePackagesController = async (req, res, next) => {
-  // 1) Validera att id i URL är ett giltigt tal
+  // Validera att id i URL är ett giltigt tal
   const packageId = Number(req.params.id);
   if (!packageId) {
     return res.status(400).json({ message: 'A valid package ID is required.' });
   }
 
-  // 2) Definiera vilka fält som är tillåtna att uppdatera
+  // Definiera vilka fält som är tillåtna att uppdatera
   const allowed = [
     'sender_id',
     'receiver_id',
@@ -22,7 +22,7 @@ export const updatePackagesController = async (req, res, next) => {
     'expected_humidity_max',
   ];
 
-  // 3) Bygg dynamiskt SET-del + värdelista
+  // Bygg dynamiskt SET-del + värdelista
   const updates = [];
   const values = [];
   let valueIndex = 1;
@@ -35,7 +35,7 @@ export const updatePackagesController = async (req, res, next) => {
     }
   }
 
-  // 4) Om inga giltiga fält skickades → be om minst ett
+  // Om inga giltiga fält skickades → be om minst ett
   if (updates.length === 0) {
     return res.status(400).json({
       message:
@@ -43,13 +43,13 @@ export const updatePackagesController = async (req, res, next) => {
     });
   }
 
-  // 5) Lägg till tidsstämpel alltid
+  // Lägg till tidsstämpel alltid
   updates.push('updated_at = NOW()');
 
-  // 6) Lägg till id som sista parameter till WHERE
+  // Lägg till id som sista parameter till WHERE
   values.push(packageId);
 
-  // 7) Bygg SQL – WHERE använder $<sista param-index>
+  // Bygg SQL – WHERE använder $<sista param-index>
   const sql = `
     UPDATE packages
        SET ${updates.join(', ')}
@@ -58,7 +58,7 @@ export const updatePackagesController = async (req, res, next) => {
   `;
 
   try {
-    // 8) Kör frågan
+    // Kör frågan
     const { rows } = await pool.query(sql, values);
 
     if (rows.length === 0) {
@@ -70,7 +70,7 @@ export const updatePackagesController = async (req, res, next) => {
       package: rows[0],
     });
   } catch (error) {
-    // 9) Vanliga fel: 23503 = FK, 22P02 = typfel
+    // Vanliga fel: 23503 = FK, 22P02 = typfel
     if (error.code === '23503') {
       const detail = error.detail || '';
       let field = 'foreign key';
