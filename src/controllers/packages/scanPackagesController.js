@@ -26,19 +26,9 @@ export const scanPackagesController = async (req, res, next) => {
 
     const pkg = rows[0];
 
-    // --- (Valfritt) skapa shipment om du vill när paket skannas ---
-    // const trackingCode = `TRK-${Date.now()}-${id}`;
-    // await db.query(
-    //   `INSERT INTO shipments (package_id, tracking_code, printed, created_at)
-    //    VALUES ($1, $2, false, NOW())
-    //    ON CONFLICT (package_id) DO NOTHING`, // om du har unik constraint på package_id
-    //   [id, trackingCode]
-    // );
-
     return res.status(200).json({
       message: 'Package scanned successfully',
       package: pkg,
-      // tracking_code: trackingCode, // om du skapar shipment
     });
   } catch (err) {
     next(err);

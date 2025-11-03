@@ -1,6 +1,5 @@
 // src/controllers/trucks/updateTruckController.js
 // Uppdaterar en truck (PUT /trucks/:id) som partial update.
-// Bygger UPDATE dynamiskt och hanterar vanliga DB-fel tydligt.
 
 import pool from '../../config/db.js';
 

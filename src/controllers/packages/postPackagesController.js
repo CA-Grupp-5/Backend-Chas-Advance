@@ -47,9 +47,10 @@ export const postPackagesController = async (req, res, next) => {
         expected_temperature_max,
         expected_humidity_min,
         expected_humidity_max,
-        created_at
+        created_at,
+        delivered_at
       )
-      VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,NOW())
+      VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,NOW(),NULL)
       RETURNING *;
     `;
 
@@ -63,6 +64,7 @@ export const postPackagesController = async (req, res, next) => {
       expected_temperature_max ?? null,
       expected_humidity_min ?? null,
       expected_humidity_max ?? null,
+      delivered_at ?? null
     ];
 
     // kör query
