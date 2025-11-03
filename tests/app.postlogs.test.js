@@ -74,7 +74,7 @@ describe('POST /packages/:id/logs', () => {
 
     expect(res.status).toBe(200);
     expect(res.body.message).toBe('Sensor logs added successfully.');
-    expect(res.body.logs).toEqual(mockLog);
+    expect(res.body.log).toEqual(mockLog);
     expect(mockedDb.query).toHaveBeenCalledWith(
       expect.stringContaining('INSERT INTO sensors'),
       ['1', 20, 55]
