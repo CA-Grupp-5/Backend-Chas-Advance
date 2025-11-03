@@ -4,33 +4,34 @@
 import pool from '../../config/db.js';
 
 export const updateTruckController = async (req, res, next) => {
-  // 1) Validera id från URL
   const truckId = Number(req.params.id);
   if (!truckId) {
     return res.status(400).json({ message: 'A valid truck ID is required.' });
   }
 
-  // 2) Tillåtna fält att uppdatera
   const allowed = ['license_plate', 'driver_id', 'status'];
 
-  // 3) SAMLAR SET-del och värden till parametrar ($1, $2, ...)
   const updates = [];
   const values = [];
   let i = 1;
 
-  // --- license_plate (normaliseras till versaler) ---
   if (Object.prototype.hasOwnProperty.call(req.body, 'license_plate')) {
-    const plate = String(req.body.license_plate || '').trim().toUpperCase();
+    const plate = String(req.body.license_plate || '')
+      .trim()
+      .toUpperCase();
     if (plate.length === 0) {
-      return res.status(400).json({ message: 'license_plate may not be empty.' });
+      return res
+        .status(400)
+        .json({ message: 'license_plate may not be empty.' });
     }
     updates.push(`license_plate = $${i++}`);
     values.push(plate);
   }
 
-  // --- status (validera mot whitelisted värden) ---
   if (Object.prototype.hasOwnProperty.call(req.body, 'status')) {
-    const status = String(req.body.status || '').trim().toUpperCase();
+    const status = String(req.body.status || '')
+      .trim()
+      .toUpperCase();
     const allowedStatus = new Set(['ACTIVE', 'INACTIVE']);
     if (!allowedStatus.has(status)) {
       return res
@@ -41,12 +42,10 @@ export const updateTruckController = async (req, res, next) => {
     values.push(status);
   }
 
-  // --- driver_id (tillåt nummer eller null för att ta bort koppling) ---
   if (Object.prototype.hasOwnProperty.call(req.body, 'driver_id')) {
     const driverId = req.body.driver_id;
 
     if (driverId === null) {
-      // explicit NULL: ingen parameter behövs
       updates.push('driver_id = NULL');
     } else {
       const num = Number(driverId);
@@ -60,7 +59,7 @@ export const updateTruckController = async (req, res, next) => {
     }
   }
 
-  if (Object.prototype.hasOwnProperty.call(req.body, 'driver_position')){
+  if (Object.prototype.hasOwnProperty.call(req.body, 'driver_position')) {
     const pos = req.body.driver_position;
     if (pos == null) {
       updateTruckController.push('driver_position = NULL');
@@ -69,19 +68,19 @@ export const updateTruckController = async (req, res, next) => {
         typeof pos !== 'object' ||
         pos.lat === undefined ||
         pos.lng === undefined ||
-        Number.isNaN(Number(pos.at)) ||
+        Number.isNaN(Number(pos.lat)) ||
         Number.isNaN(Number(pos.lng))
       ) {
         return res.status(400).json({
-          message: 'driver_position måste vara ett objekt {lat:number, lng:number, ts=:string}',
+          message:
+            'driver_position måste vara ett objekt {lat:number, lng:number, ts:string}',
         });
       }
-      updates.push('driver_position = $${i++}');
+      updates.push(`driver_position = $${i++}`);
       values.push(pos);
     }
   }
 
-  // Om inget giltigt fält skickades -> 400
   if (updates.length === 0) {
     return res.status(400).json({
       message:
@@ -89,8 +88,6 @@ export const updateTruckController = async (req, res, next) => {
     });
   }
 
-
-  // id till WHERE som sista parameter
   values.push(truckId);
 
   const sql = `
@@ -112,7 +109,6 @@ export const updateTruckController = async (req, res, next) => {
       truck: rows[0],
     });
   } catch (error) {
-    // 23503 = FK-överträdelser (t.ex. driver_id pekar på user som inte finns)
     if (error.code === '23503') {
       return res.status(400).json({
         message: 'Invalid driver_id – referenced user does not exist.',
