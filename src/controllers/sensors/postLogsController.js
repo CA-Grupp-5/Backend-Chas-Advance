@@ -75,9 +75,8 @@ export const postLogsController = async (req, res, next) => {
       await createNotification(pkg.user_id, packageId, note.type, note.message);
     }
 
-    // 5️⃣ Send the response
     res.status(200).json({
-      message: 'Sensor log added successfully.',
+      message: 'Sensor logs added successfully.',
       log: insertedLog,
       notificationsCreated: notifications.length,
       details:
